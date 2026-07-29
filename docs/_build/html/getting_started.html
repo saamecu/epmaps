@@ -1,0 +1,261 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Getting Started &mdash; EPMaps 0.1.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=9edc463e" />
+
+  
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=01f34227"></script>
+      <script src="_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="API Reference" href="api/index.html" />
+    <link rel="prev" title="EPMaps Documentation" href="index.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #2980B9" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            EPMaps
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Getting Started</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#installation">Installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#prerequisites">Prerequisites</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#setup-steps">Setup Steps</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#verifying-installation">Verifying Installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#first-steps-with-epmaps">First Steps with EPMaps</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#basic-data-reading">Basic Data Reading</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#reading-full-file">Reading Full File</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#reading-in-chunks-recommended-for-large-files">Reading in Chunks (Recommended for Large Files)</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#working-with-data">Working with Data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#next-steps">Next Steps</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#troubleshooting">Troubleshooting</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="api/index.html">API Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/index.html#module-src.data_reader">Data Reader Module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="development.html">Development Guide</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="api/src.data_reader.html">src.data_reader</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: #2980B9" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">EPMaps</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Getting Started</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/getting_started.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="getting-started">
+<h1>Getting Started<a class="headerlink" href="#getting-started" title="Link to this heading"></a></h1>
+<section id="installation">
+<h2>Installation<a class="headerlink" href="#installation" title="Link to this heading"></a></h2>
+</section>
+<section id="prerequisites">
+<h2>Prerequisites<a class="headerlink" href="#prerequisites" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p>Python 3.10+</p></li>
+<li><p>pip</p></li>
+</ul>
+</section>
+<section id="setup-steps">
+<h2>Setup Steps<a class="headerlink" href="#setup-steps" title="Link to this heading"></a></h2>
+<ol class="arabic">
+<li><p><strong>Clone the repository</strong></p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>git<span class="w"> </span>clone<span class="w"> </span>&lt;repository-url&gt;
+<span class="nb">cd</span><span class="w"> </span>epmaps
+</pre></div>
+</div>
+</li>
+<li><p><strong>Create and activate virtual environment</strong></p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python3<span class="w"> </span>-m<span class="w"> </span>venv<span class="w"> </span>.venv
+<span class="nb">source</span><span class="w"> </span>.venv/bin/activate
+</pre></div>
+</div>
+</li>
+<li><p><strong>Install dependencies</strong></p>
+<p>For development (includes testing and documentation tools):</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip<span class="w"> </span>install<span class="w"> </span>-r<span class="w"> </span>requirements-dev.txt
+</pre></div>
+</div>
+<p>For production only:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip<span class="w"> </span>install<span class="w"> </span>-r<span class="w"> </span>requirements.txt
+</pre></div>
+</div>
+</li>
+</ol>
+</section>
+<section id="verifying-installation">
+<h2>Verifying Installation<a class="headerlink" href="#verifying-installation" title="Link to this heading"></a></h2>
+<p>Test that everything is set up correctly:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Run tests</span>
+pytest<span class="w"> </span>tests/
+
+<span class="c1"># Check version</span>
+python<span class="w"> </span>-c<span class="w"> </span><span class="s2">&quot;import pandas; print(pandas.__version__)&quot;</span>
+</pre></div>
+</div>
+</section>
+<section id="first-steps-with-epmaps">
+<h2>First Steps with EPMaps<a class="headerlink" href="#first-steps-with-epmaps" title="Link to this heading"></a></h2>
+<section id="basic-data-reading">
+<h3>Basic Data Reading<a class="headerlink" href="#basic-data-reading" title="Link to this heading"></a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">src.data_reader</span><span class="w"> </span><span class="kn">import</span> <span class="n">DataReader</span>
+
+<span class="c1"># Initialize reader with your data file</span>
+<span class="n">reader</span> <span class="o">=</span> <span class="n">DataReader</span><span class="p">(</span><span class="s2">&quot;datos/Datalle 0125.txt&quot;</span><span class="p">)</span>
+
+<span class="c1"># Get file information</span>
+<span class="n">info</span> <span class="o">=</span> <span class="n">reader</span><span class="o">.</span><span class="n">get_file_info</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;File: </span><span class="si">{</span><span class="n">info</span><span class="p">[</span><span class="s1">&#39;path&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Size: </span><span class="si">{</span><span class="n">info</span><span class="p">[</span><span class="s1">&#39;size_mb&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2"> MB&quot;</span><span class="p">)</span>
+
+<span class="c1"># Get column names</span>
+<span class="n">columns</span> <span class="o">=</span> <span class="n">reader</span><span class="o">.</span><span class="n">get_columns</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Columns: </span><span class="si">{</span><span class="n">columns</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="reading-full-file">
+<h3>Reading Full File<a class="headerlink" href="#reading-full-file" title="Link to this heading"></a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Read the entire file into memory</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">reader</span><span class="o">.</span><span class="n">read_full</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">head</span><span class="p">())</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Total rows: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">df</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="reading-in-chunks-recommended-for-large-files">
+<h3>Reading in Chunks (Recommended for Large Files)<a class="headerlink" href="#reading-in-chunks-recommended-for-large-files" title="Link to this heading"></a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Process file in chunks to save memory</span>
+<span class="k">for</span> <span class="n">chunk</span> <span class="ow">in</span> <span class="n">reader</span><span class="o">.</span><span class="n">read_chunks</span><span class="p">(</span><span class="n">chunksize</span><span class="o">=</span><span class="mi">50000</span><span class="p">):</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Processing chunk with </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">chunk</span><span class="p">)</span><span class="si">}</span><span class="s2"> rows&quot;</span><span class="p">)</span>
+    <span class="c1"># Do your analysis here</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="n">chunk</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s2">&quot;RUBRO&quot;</span><span class="p">)[</span><span class="s2">&quot;PRECIO_TOTAL&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="working-with-data">
+<h2>Working with Data<a class="headerlink" href="#working-with-data" title="Link to this heading"></a></h2>
+<p>Once you have data loaded, you can use pandas for analysis:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">src.data_reader</span><span class="w"> </span><span class="kn">import</span> <span class="n">DataReader</span>
+
+<span class="n">reader</span> <span class="o">=</span> <span class="n">DataReader</span><span class="p">(</span><span class="s2">&quot;datos/Datalle 0125.txt&quot;</span><span class="p">)</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">reader</span><span class="o">.</span><span class="n">read_full</span><span class="p">()</span>
+
+<span class="c1"># Basic statistics</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">describe</span><span class="p">())</span>
+
+<span class="c1"># Group by rubro (category)</span>
+<span class="n">by_rubro</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s2">&quot;RUBRO&quot;</span><span class="p">)[</span><span class="s2">&quot;PRECIO_TOTAL&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">by_rubro</span><span class="p">)</span>
+
+<span class="c1"># Filter data</span>
+<span class="n">admin_data</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">df</span><span class="p">[</span><span class="s2">&quot;RUBRO&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;AM01&quot;</span><span class="p">]</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Administration charges: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">admin_data</span><span class="p">)</span><span class="si">}</span><span class="s2"> rows&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="next-steps">
+<h2>Next Steps<a class="headerlink" href="#next-steps" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p>Review <a class="reference internal" href="development.html"><span class="doc">Development Guide</span></a> for code style and testing guidelines</p></li>
+<li><p>Check <a class="reference internal" href="api/index.html"><span class="doc">API Reference</span></a> for detailed API documentation</p></li>
+<li><p>Run existing tests to familiarize yourself with the codebase: <code class="docutils literal notranslate"><span class="pre">pytest</span> <span class="pre">tests/</span> <span class="pre">-v</span></code></p></li>
+</ul>
+</section>
+<section id="troubleshooting">
+<h2>Troubleshooting<a class="headerlink" href="#troubleshooting" title="Link to this heading"></a></h2>
+<p><strong>ModuleNotFoundError: No module named ‘pandas’</strong></p>
+<p>Make sure you’ve activated the virtual environment:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">source</span><span class="w"> </span>.venv/bin/activate
+pip<span class="w"> </span>install<span class="w"> </span>-r<span class="w"> </span>requirements-dev.txt
+</pre></div>
+</div>
+<p><strong>File not found error</strong></p>
+<p>Ensure your data file exists and the path is correct:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>ls<span class="w"> </span>-lh<span class="w"> </span>datos/
+python<span class="w"> </span>-c<span class="w"> </span><span class="s2">&quot;from pathlib import Path; print(Path(&#39;datos/Datalle 0125.txt&#39;).exists())&quot;</span>
+</pre></div>
+</div>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="index.html" class="btn btn-neutral float-left" title="EPMaps Documentation" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="api/index.html" class="btn btn-neutral float-right" title="API Reference" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2026, Santiago Andrade.</p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

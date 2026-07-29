@@ -1,0 +1,358 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Development Guide &mdash; EPMaps 0.1.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=9edc463e" />
+
+  
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=01f34227"></script>
+      <script src="_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="src.data_reader" href="api/src.data_reader.html" />
+    <link rel="prev" title="Data Reader" href="api/data_reader.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #2980B9" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            EPMaps
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="getting_started.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/index.html">API Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/index.html#module-src.data_reader">Data Reader Module</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Development Guide</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#code-standards">Code Standards</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#formatting">Formatting</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#linting">Linting</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#type-checking">Type Checking</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#testing">Testing</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#writing-tests">Writing Tests</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#running-tests">Running Tests</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#test-coverage">Test Coverage</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#documentation">Documentation</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#building-documentation">Building Documentation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#writing-docstrings">Writing Docstrings</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#commit-messages">Commit Messages</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#git-workflow">Git Workflow</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#project-structure">Project Structure</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#virtual-environment">Virtual Environment</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#common-tasks">Common Tasks</a></li>
+</ul>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="api/src.data_reader.html">src.data_reader</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: #2980B9" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">EPMaps</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Development Guide</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/development.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="development-guide">
+<h1>Development Guide<a class="headerlink" href="#development-guide" title="Link to this heading"></a></h1>
+<section id="code-standards">
+<h2>Code Standards<a class="headerlink" href="#code-standards" title="Link to this heading"></a></h2>
+<p>We maintain high code quality standards. All code must:</p>
+<ul class="simple">
+<li><p>Follow PEP 8 style guide</p></li>
+<li><p>Have proper type hints</p></li>
+<li><p>Include docstrings for public methods</p></li>
+<li><p>Pass all tests before merging</p></li>
+</ul>
+<section id="formatting">
+<h3>Formatting<a class="headerlink" href="#formatting" title="Link to this heading"></a></h3>
+<p>Use black to format code:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">source</span><span class="w"> </span>.venv/bin/activate
+black<span class="w"> </span>src/<span class="w"> </span>tests/
+</pre></div>
+</div>
+</section>
+<section id="linting">
+<h3>Linting<a class="headerlink" href="#linting" title="Link to this heading"></a></h3>
+<p>Use pylint to check code quality:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pylint<span class="w"> </span>src/
+</pre></div>
+</div>
+</section>
+<section id="type-checking">
+<h3>Type Checking<a class="headerlink" href="#type-checking" title="Link to this heading"></a></h3>
+<p>Use mypy for static type checking:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>mypy<span class="w"> </span>src/
+</pre></div>
+</div>
+</section>
+</section>
+<section id="testing">
+<h2>Testing<a class="headerlink" href="#testing" title="Link to this heading"></a></h2>
+<p><strong>All new features must include unit tests.</strong></p>
+<section id="writing-tests">
+<h3>Writing Tests<a class="headerlink" href="#writing-tests" title="Link to this heading"></a></h3>
+<ol class="arabic simple">
+<li><p>Create test file in <code class="docutils literal notranslate"><span class="pre">tests/</span></code> directory</p></li>
+<li><p>Name it <code class="docutils literal notranslate"><span class="pre">test_&lt;module_name&gt;.py</span></code></p></li>
+<li><p>Use pytest for testing framework</p></li>
+<li><p>Include fixtures for common test data</p></li>
+</ol>
+<p>Example test structure:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="sd">&quot;&quot;&quot;Unit tests for my_module.&quot;&quot;&quot;</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">pytest</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">src.my_module</span><span class="w"> </span><span class="kn">import</span> <span class="n">MyClass</span>
+
+<span class="k">class</span><span class="w"> </span><span class="nc">TestMyClass</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Tests for MyClass.&quot;&quot;&quot;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">test_valid_initialization</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Test successful initialization.&quot;&quot;&quot;</span>
+        <span class="n">obj</span> <span class="o">=</span> <span class="n">MyClass</span><span class="p">(</span><span class="s2">&quot;test_value&quot;</span><span class="p">)</span>
+        <span class="k">assert</span> <span class="n">obj</span><span class="o">.</span><span class="n">value</span> <span class="o">==</span> <span class="s2">&quot;test_value&quot;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">test_invalid_input_raises_error</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Test that invalid input raises ValueError.&quot;&quot;&quot;</span>
+        <span class="k">with</span> <span class="n">pytest</span><span class="o">.</span><span class="n">raises</span><span class="p">(</span><span class="ne">ValueError</span><span class="p">):</span>
+            <span class="n">MyClass</span><span class="p">(</span><span class="kc">None</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="running-tests">
+<h3>Running Tests<a class="headerlink" href="#running-tests" title="Link to this heading"></a></h3>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Run all tests</span>
+pytest<span class="w"> </span>tests/
+
+<span class="c1"># Run specific test file</span>
+pytest<span class="w"> </span>tests/test_data_reader.py
+
+<span class="c1"># Run with verbose output</span>
+pytest<span class="w"> </span>tests/<span class="w"> </span>-v
+
+<span class="c1"># Run with coverage report</span>
+pytest<span class="w"> </span>tests/<span class="w"> </span>--cov<span class="o">=</span>src
+
+<span class="c1"># Run only unit tests</span>
+pytest<span class="w"> </span>tests/<span class="w"> </span>-m<span class="w"> </span>unit
+</pre></div>
+</div>
+</section>
+<section id="test-coverage">
+<h3>Test Coverage<a class="headerlink" href="#test-coverage" title="Link to this heading"></a></h3>
+<p>Check test coverage:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pytest<span class="w"> </span>tests/<span class="w"> </span>--cov<span class="o">=</span>src<span class="w"> </span>--cov-report<span class="o">=</span>html
+</pre></div>
+</div>
+<p>This generates an HTML report in <code class="docutils literal notranslate"><span class="pre">htmlcov/index.html</span></code></p>
+</section>
+</section>
+<section id="documentation">
+<h2>Documentation<a class="headerlink" href="#documentation" title="Link to this heading"></a></h2>
+<section id="building-documentation">
+<h3>Building Documentation<a class="headerlink" href="#building-documentation" title="Link to this heading"></a></h3>
+<p>Documentation is built using Sphinx:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">cd</span><span class="w"> </span>docs/
+make<span class="w"> </span>html
+</pre></div>
+</div>
+<p>The built documentation appears in <code class="docutils literal notranslate"><span class="pre">docs/_build/html/</span></code></p>
+</section>
+<section id="writing-docstrings">
+<h3>Writing Docstrings<a class="headerlink" href="#writing-docstrings" title="Link to this heading"></a></h3>
+<p>Use Google-style docstrings for all public functions and classes:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">process_data</span><span class="p">(</span><span class="n">file_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">chunk_size</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1000</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Process invoice data from file.</span>
+
+<span class="sd">    Reads and processes invoice data from the specified file path.</span>
+<span class="sd">    Large files are processed in chunks to manage memory usage.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        file_path: Path to the data file.</span>
+<span class="sd">        chunk_size: Number of rows per processing chunk. Defaults to 1000.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        Processed DataFrame containing aggregated data.</span>
+
+<span class="sd">    Raises:</span>
+<span class="sd">        FileNotFoundError: If the file does not exist.</span>
+<span class="sd">        ValueError: If chunk_size is not positive.</span>
+
+<span class="sd">    Example:</span>
+<span class="sd">        &gt;&gt;&gt; df = process_data(&quot;datos/Datalle 0125.txt&quot;, chunk_size=50000)</span>
+<span class="sd">        &gt;&gt;&gt; print(len(df))</span>
+<span class="sd">        1000</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="commit-messages">
+<h2>Commit Messages<a class="headerlink" href="#commit-messages" title="Link to this heading"></a></h2>
+<p>Follow these guidelines for commit messages:</p>
+<ul class="simple">
+<li><p>Use clear, descriptive messages</p></li>
+<li><p>Start with a verb (Add, Fix, Update, Remove, etc.)</p></li>
+<li><p>Keep first line under 70 characters</p></li>
+<li><p>Include detailed explanation in body if needed</p></li>
+<li><p>Never include AI co-author credits</p></li>
+</ul>
+<p>Example:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>Add DataReader class for reading invoice files
+
+- Supports pipe-delimited text files
+- Implements chunked reading for large files
+- Includes comprehensive error handling
+</pre></div>
+</div>
+</section>
+<section id="git-workflow">
+<h2>Git Workflow<a class="headerlink" href="#git-workflow" title="Link to this heading"></a></h2>
+<ol class="arabic simple">
+<li><p>Create a new branch for your feature</p></li>
+<li><p>Make changes and commit with descriptive messages</p></li>
+<li><p>Write and run tests for all new features</p></li>
+<li><p>Update documentation as needed</p></li>
+<li><p>Push to repository</p></li>
+<li><p>Create pull request with clear description</p></li>
+</ol>
+<p>The <code class="docutils literal notranslate"><span class="pre">datos/</span></code> folder is protected:</p>
+<ul class="simple">
+<li><p>All files in <code class="docutils literal notranslate"><span class="pre">datos/</span></code> are ignored by <code class="docutils literal notranslate"><span class="pre">.gitignore</span></code></p></li>
+<li><p>GitHub Actions block any attempts to commit <code class="docutils literal notranslate"><span class="pre">datos/</span></code> files</p></li>
+<li><p><strong>Data files will never be committed to the repository</strong></p></li>
+</ul>
+</section>
+<section id="project-structure">
+<h2>Project Structure<a class="headerlink" href="#project-structure" title="Link to this heading"></a></h2>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>epmaps/
+├── src/                 # Source code
+│   ├── __init__.py
+│   ├── data_reader.py   # Data reading functionality
+│   └── ...
+├── tests/               # Unit tests
+│   ├── __init__.py
+│   ├── test_data_reader.py
+│   └── ...
+├── docs/                # Sphinx documentation
+│   ├── conf.py
+│   ├── index.rst
+│   └── ...
+├── datos/               # Data files (never committed)
+├── .github/workflows/   # GitHub Actions
+├── CLAUDE.md            # Development guidance
+├── README.md
+├── requirements.txt
+├── requirements-dev.txt
+├── pytest.ini
+├── .coveragerc
+└── ...
+</pre></div>
+</div>
+</section>
+<section id="virtual-environment">
+<h2>Virtual Environment<a class="headerlink" href="#virtual-environment" title="Link to this heading"></a></h2>
+<p>Always work in the virtual environment:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Activate</span>
+<span class="nb">source</span><span class="w"> </span>.venv/bin/activate
+
+<span class="c1"># Deactivate</span>
+deactivate
+</pre></div>
+</div>
+</section>
+<section id="common-tasks">
+<h2>Common Tasks<a class="headerlink" href="#common-tasks" title="Link to this heading"></a></h2>
+<p>Clean up Python cache files:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>find<span class="w"> </span>.<span class="w"> </span>-type<span class="w"> </span>d<span class="w"> </span>-name<span class="w"> </span>__pycache__<span class="w"> </span>-exec<span class="w"> </span>rm<span class="w"> </span>-r<span class="w"> </span><span class="o">{}</span><span class="w"> </span>+
+find<span class="w"> </span>.<span class="w"> </span>-type<span class="w"> </span>f<span class="w"> </span>-name<span class="w"> </span><span class="s2">&quot;*.pyc&quot;</span><span class="w"> </span>-delete
+</pre></div>
+</div>
+<p>Update dependencies:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip<span class="w"> </span>install<span class="w"> </span>--upgrade<span class="w"> </span>-r<span class="w"> </span>requirements-dev.txt
+</pre></div>
+</div>
+<p>Generate test report:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pytest<span class="w"> </span>tests/<span class="w"> </span>--cov<span class="o">=</span>src<span class="w"> </span>--cov-report<span class="o">=</span>term-missing
+</pre></div>
+</div>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="api/data_reader.html" class="btn btn-neutral float-left" title="Data Reader" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="api/src.data_reader.html" class="btn btn-neutral float-right" title="src.data_reader" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2026, Santiago Andrade.</p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
