@@ -46,6 +46,7 @@
 <li class="toctree-l1"><a class="reference internal" href="getting_started.html">Getting Started</a></li>
 <li class="toctree-l1"><a class="reference internal" href="api/index.html">API Reference</a></li>
 <li class="toctree-l1"><a class="reference internal" href="api/index.html#module-src.data_reader">Data Reader Module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/index.html#module-src.analyzer">Data Analyzer Module</a></li>
 <li class="toctree-l1"><a class="reference internal" href="development.html">Development Guide</a></li>
 </ul>
 <ul>
@@ -100,6 +101,10 @@
 </li>
 <li class="toctree-l1"><a class="reference internal" href="api/index.html#module-src.data_reader">Data Reader Module</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="api/index.html#src.data_reader.DataReader"><code class="docutils literal notranslate"><span class="pre">DataReader</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="api/index.html#module-src.analyzer">Data Analyzer Module</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="api/index.html#src.analyzer.DataAnalyzer"><code class="docutils literal notranslate"><span class="pre">DataAnalyzer</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="development.html">Development Guide</a><ul>
@@ -169,6 +174,37 @@ make<span class="w"> </span>html
 <span class="c1"># Get column names</span>
 <span class="n">columns</span> <span class="o">=</span> <span class="n">reader</span><span class="o">.</span><span class="n">get_columns</span><span class="p">()</span>
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Columns: </span><span class="si">{</span><span class="n">columns</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="analyzing-data">
+<h2>Analyzing Data<a class="headerlink" href="#analyzing-data" title="Link to this heading"></a></h2>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">src.analyzer</span><span class="w"> </span><span class="kn">import</span> <span class="n">DataAnalyzer</span>
+
+<span class="c1"># Create analyzer from file</span>
+<span class="n">analyzer</span> <span class="o">=</span> <span class="n">DataAnalyzer</span><span class="o">.</span><span class="n">from_file</span><span class="p">(</span><span class="s2">&quot;datos/Datalle 0125.txt&quot;</span><span class="p">)</span>
+
+<span class="c1"># Get summary statistics</span>
+<span class="n">stats</span> <span class="o">=</span> <span class="n">analyzer</span><span class="o">.</span><span class="n">get_summary_stats</span><span class="p">(</span><span class="n">value_column</span><span class="o">=</span><span class="s2">&quot;PRECIO_TOTAL&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Total: $</span><span class="si">{</span><span class="n">stats</span><span class="p">[</span><span class="s1">&#39;sum&#39;</span><span class="p">]</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Average: $</span><span class="si">{</span><span class="n">stats</span><span class="p">[</span><span class="s1">&#39;mean&#39;</span><span class="p">]</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<span class="c1"># Group by category (rubro)</span>
+<span class="n">by_rubro</span> <span class="o">=</span> <span class="n">analyzer</span><span class="o">.</span><span class="n">group_by_column</span><span class="p">(</span><span class="s2">&quot;RUBRO&quot;</span><span class="p">,</span> <span class="n">value_column</span><span class="o">=</span><span class="s2">&quot;PRECIO_TOTAL&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">by_rubro</span><span class="p">)</span>
+
+<span class="c1"># Extract month from invoice</span>
+<span class="n">df_with_month</span> <span class="o">=</span> <span class="n">analyzer</span><span class="o">.</span><span class="n">extract_month</span><span class="p">()</span>
+
+<span class="c1"># Compare periods</span>
+<span class="n">comparison</span> <span class="o">=</span> <span class="n">analyzer</span><span class="o">.</span><span class="n">compare_periods</span><span class="p">(</span><span class="s2">&quot;MONTH&quot;</span><span class="p">,</span> <span class="s2">&quot;001&quot;</span><span class="p">,</span> <span class="s2">&quot;002&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Period 1 Total: $</span><span class="si">{</span><span class="n">comparison</span><span class="p">[</span><span class="s1">&#39;period1_total&#39;</span><span class="p">]</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Period 2 Total: $</span><span class="si">{</span><span class="n">comparison</span><span class="p">[</span><span class="s1">&#39;period2_total&#39;</span><span class="p">]</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Change: </span><span class="si">{</span><span class="n">comparison</span><span class="p">[</span><span class="s1">&#39;percentage_change&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">%&quot;</span><span class="p">)</span>
+
+<span class="c1"># Get top items</span>
+<span class="n">top_rubros</span> <span class="o">=</span> <span class="n">analyzer</span><span class="o">.</span><span class="n">top_by_value</span><span class="p">(</span><span class="s2">&quot;RUBRO&quot;</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">top_rubros</span><span class="p">)</span>
 </pre></div>
 </div>
 </section>

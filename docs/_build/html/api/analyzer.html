@@ -6,7 +6,7 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>API Reference &mdash; EPMaps 0.1.0 documentation</title>
+  <title>Data Analyzer &mdash; EPMaps 0.1.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=9edc463e" />
 
@@ -19,8 +19,8 @@
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Data Reader" href="data_reader.html" />
-    <link rel="prev" title="Getting Started" href="../getting_started.html" /> 
+    <link rel="next" title="Development Guide" href="../development.html" />
+    <link rel="prev" title="Data Reader" href="data_reader.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -45,43 +45,19 @@
               <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../getting_started.html">Getting Started</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">API Reference</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#core-modules">Core Modules</a><ul>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">API Reference</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="index.html#core-modules">Core Modules</a><ul class="current">
 <li class="toctree-l3"><a class="reference internal" href="data_reader.html">Data Reader</a></li>
-<li class="toctree-l3"><a class="reference internal" href="analyzer.html">Data Analyzer</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Data Analyzer</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#src.analyzer.DataAnalyzer"><code class="docutils literal notranslate"><span class="pre">DataAnalyzer</span></code></a></li>
 </ul>
 </li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="#module-src.data_reader">Data Reader Module</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#src.data_reader.DataReader"><code class="docutils literal notranslate"><span class="pre">DataReader</span></code></a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#src.data_reader.DataReader.file_path"><code class="docutils literal notranslate"><span class="pre">DataReader.file_path</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="#src.data_reader.DataReader.delimiter"><code class="docutils literal notranslate"><span class="pre">DataReader.delimiter</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="#src.data_reader.DataReader.encoding"><code class="docutils literal notranslate"><span class="pre">DataReader.encoding</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="#src.data_reader.DataReader.read_full"><code class="docutils literal notranslate"><span class="pre">DataReader.read_full()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="#src.data_reader.DataReader.read_chunks"><code class="docutils literal notranslate"><span class="pre">DataReader.read_chunks()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="#src.data_reader.DataReader.get_file_info"><code class="docutils literal notranslate"><span class="pre">DataReader.get_file_info()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="#src.data_reader.DataReader.get_columns"><code class="docutils literal notranslate"><span class="pre">DataReader.get_columns()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="#src.data_reader.DataReader.get_row_count"><code class="docutils literal notranslate"><span class="pre">DataReader.get_row_count()</span></code></a></li>
 </ul>
 </li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="#module-src.analyzer">Data Analyzer Module</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#src.analyzer.DataAnalyzer"><code class="docutils literal notranslate"><span class="pre">DataAnalyzer</span></code></a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#src.analyzer.DataAnalyzer.df"><code class="docutils literal notranslate"><span class="pre">DataAnalyzer.df</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="#src.analyzer.DataAnalyzer.from_file"><code class="docutils literal notranslate"><span class="pre">DataAnalyzer.from_file()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="#src.analyzer.DataAnalyzer.extract_month"><code class="docutils literal notranslate"><span class="pre">DataAnalyzer.extract_month()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="#src.analyzer.DataAnalyzer.get_summary_stats"><code class="docutils literal notranslate"><span class="pre">DataAnalyzer.get_summary_stats()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="#src.analyzer.DataAnalyzer.group_by_column"><code class="docutils literal notranslate"><span class="pre">DataAnalyzer.group_by_column()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="#src.analyzer.DataAnalyzer.compare_periods"><code class="docutils literal notranslate"><span class="pre">DataAnalyzer.compare_periods()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="#src.analyzer.DataAnalyzer.top_by_value"><code class="docutils literal notranslate"><span class="pre">DataAnalyzer.top_by_value()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="#src.analyzer.DataAnalyzer.get_row_count"><code class="docutils literal notranslate"><span class="pre">DataAnalyzer.get_row_count()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="#src.analyzer.DataAnalyzer.get_columns"><code class="docutils literal notranslate"><span class="pre">DataAnalyzer.get_columns()</span></code></a></li>
-</ul>
-</li>
-</ul>
-</li>
+<li class="toctree-l1"><a class="reference internal" href="index.html#module-src.data_reader">Data Reader Module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="index.html#module-src.analyzer">Data Analyzer Module</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../development.html">Development Guide</a></li>
 </ul>
 <ul>
@@ -102,9 +78,10 @@
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
       <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
-      <li class="breadcrumb-item active">API Reference</li>
+          <li class="breadcrumb-item"><a href="index.html">API Reference</a></li>
+      <li class="breadcrumb-item active">Data Analyzer</li>
       <li class="wy-breadcrumbs-aside">
-            <a href="../_sources/api/index.rst.txt" rel="nofollow"> View page source</a>
+            <a href="../_sources/api/analyzer.rst.txt" rel="nofollow"> View page source</a>
       </li>
   </ul>
   <hr/>
@@ -112,156 +89,8 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <section id="api-reference">
-<h1>API Reference<a class="headerlink" href="#api-reference" title="Link to this heading"></a></h1>
-<section id="core-modules">
-<h2>Core Modules<a class="headerlink" href="#core-modules" title="Link to this heading"></a></h2>
-<div class="toctree-wrapper compound">
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="data_reader.html">Data Reader</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="data_reader.html#src.data_reader.DataReader"><code class="docutils literal notranslate"><span class="pre">DataReader</span></code></a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="analyzer.html">Data Analyzer</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="analyzer.html#src.analyzer.DataAnalyzer"><code class="docutils literal notranslate"><span class="pre">DataAnalyzer</span></code></a></li>
-</ul>
-</li>
-</ul>
-</div>
-</section>
-</section>
-<section id="module-src.data_reader">
-<span id="data-reader-module"></span><h1>Data Reader Module<a class="headerlink" href="#module-src.data_reader" title="Link to this heading"></a></h1>
-<p>Data reader module for parsing and loading invoice data.</p>
-<dl class="py class">
-<dt class="sig sig-object py" id="src.data_reader.DataReader">
-<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">src.data_reader.</span></span><span class="sig-name descname"><span class="pre">DataReader</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file_path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">delimiter</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'|'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">encoding</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'utf-8'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#src.data_reader.DataReader" title="Link to this definition"></a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-<p>Reads and parses invoice data from text files.</p>
-<p>This class handles reading large pipe-delimited text files containing
-invoice details. It supports chunked reading for memory efficiency
-and provides methods to extract data by various criteria.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>file_path</strong> (<em>str</em><em> | </em><em>Path</em>)</p></li>
-<li><p><strong>delimiter</strong> (<em>str</em>)</p></li>
-<li><p><strong>encoding</strong> (<em>str</em>)</p></li>
-</ul>
-</dd>
-</dl>
-<dl class="py attribute">
-<dt class="sig sig-object py" id="src.data_reader.DataReader.file_path">
-<span class="sig-name descname"><span class="pre">file_path</span></span><a class="headerlink" href="#src.data_reader.DataReader.file_path" title="Link to this definition"></a></dt>
-<dd><p>Path to the data file to read.</p>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="src.data_reader.DataReader.delimiter">
-<span class="sig-name descname"><span class="pre">delimiter</span></span><a class="headerlink" href="#src.data_reader.DataReader.delimiter" title="Link to this definition"></a></dt>
-<dd><p>Character used to delimit fields (default: ‘|’).</p>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="src.data_reader.DataReader.encoding">
-<span class="sig-name descname"><span class="pre">encoding</span></span><a class="headerlink" href="#src.data_reader.DataReader.encoding" title="Link to this definition"></a></dt>
-<dd><p>File encoding (default: ‘utf-8’).</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="src.data_reader.DataReader.read_full">
-<span class="sig-name descname"><span class="pre">read_full</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#src.data_reader.DataReader.read_full" title="Link to this definition"></a></dt>
-<dd><p>Read the entire data file into a DataFrame.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">DataFrame</span></code></span></p>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>DataFrame with all data from the file.</p>
-</dd>
-<dt class="field-odd">Raises<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>pd.errors.ParserError</strong> – If there’s an error parsing the file.</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="src.data_reader.DataReader.read_chunks">
-<span class="sig-name descname"><span class="pre">read_chunks</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">chunksize</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10000</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#src.data_reader.DataReader.read_chunks" title="Link to this definition"></a></dt>
-<dd><p>Read data in chunks for memory-efficient processing.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>chunksize</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></span>) – Number of rows per chunk. Defaults to 10000.</p>
-</dd>
-<dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">TextFileReader</span></code></span></p>
-</dd>
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>An iterator of DataFrames, each containing chunksize rows.</p>
-</dd>
-<dt class="field-even">Raises<span class="colon">:</span></dt>
-<dd class="field-even"><p><strong>ValueError</strong> – If chunksize is not positive.</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="src.data_reader.DataReader.get_file_info">
-<span class="sig-name descname"><span class="pre">get_file_info</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#src.data_reader.DataReader.get_file_info" title="Link to this definition"></a></dt>
-<dd><p>Get metadata about the data file.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p><ul class="simple">
-<li><p>path: Full file path</p></li>
-<li><p>size_mb: File size in megabytes</p></li>
-<li><p>exists: Whether the file exists</p></li>
-</ul>
-</p>
-</dd>
-<dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code></span></p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="src.data_reader.DataReader.get_columns">
-<span class="sig-name descname"><span class="pre">get_columns</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#src.data_reader.DataReader.get_columns" title="Link to this definition"></a></dt>
-<dd><p>Get the column names from the data file.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">list</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>]</span></p>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>List of column names.</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="src.data_reader.DataReader.get_row_count">
-<span class="sig-name descname"><span class="pre">get_row_count</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#src.data_reader.DataReader.get_row_count" title="Link to this definition"></a></dt>
-<dd><p>Count the total number of rows in the file (excluding header).</p>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>This reads the entire file to count rows, which may be slow
-for very large files. Use with caution.</p>
-</div>
-<dl class="field-list simple">
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></span></p>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>Total number of data rows.</p>
-</dd>
-</dl>
-</dd></dl>
-
-</dd></dl>
-
-</section>
-<section id="module-src.analyzer">
-<span id="data-analyzer-module"></span><h1>Data Analyzer Module<a class="headerlink" href="#module-src.analyzer" title="Link to this heading"></a></h1>
+  <section id="module-src.analyzer">
+<span id="data-analyzer"></span><h1>Data Analyzer<a class="headerlink" href="#module-src.analyzer" title="Link to this heading"></a></h1>
 <p>Data analysis module for invoice data comparison and statistics.</p>
 <dl class="py class">
 <dt class="sig sig-object py" id="src.analyzer.DataAnalyzer">
@@ -453,8 +282,8 @@ Defaults to ‘sum’.</p></li>
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="../getting_started.html" class="btn btn-neutral float-left" title="Getting Started" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="data_reader.html" class="btn btn-neutral float-right" title="Data Reader" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="data_reader.html" class="btn btn-neutral float-left" title="Data Reader" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../development.html" class="btn btn-neutral float-right" title="Development Guide" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>

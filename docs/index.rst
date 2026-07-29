@@ -74,6 +74,38 @@ File Information
    columns = reader.get_columns()
    print(f"Columns: {columns}")
 
+Analyzing Data
+~~~~~~~~~~~~~~
+
+.. code-block:: python
+
+   from src.analyzer import DataAnalyzer
+
+   # Create analyzer from file
+   analyzer = DataAnalyzer.from_file("datos/Datalle 0125.txt")
+
+   # Get summary statistics
+   stats = analyzer.get_summary_stats(value_column="PRECIO_TOTAL")
+   print(f"Total: ${stats['sum']:.2f}")
+   print(f"Average: ${stats['mean']:.2f}")
+
+   # Group by category (rubro)
+   by_rubro = analyzer.group_by_column("RUBRO", value_column="PRECIO_TOTAL")
+   print(by_rubro)
+
+   # Extract month from invoice
+   df_with_month = analyzer.extract_month()
+
+   # Compare periods
+   comparison = analyzer.compare_periods("MONTH", "001", "002")
+   print(f"Period 1 Total: ${comparison['period1_total']:.2f}")
+   print(f"Period 2 Total: ${comparison['period2_total']:.2f}")
+   print(f"Change: {comparison['percentage_change']}%")
+
+   # Get top items
+   top_rubros = analyzer.top_by_value("RUBRO", n=5)
+   print(top_rubros)
+
 API Documentation
 ==================
 
