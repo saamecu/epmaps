@@ -32,15 +32,19 @@ pip install -r requirements-dev.txt
 
 ```
 epmaps/
-├── datos/              # Data directory (ignored by git)
-├── .venv/              # Python virtual environment
-├── src/                # Source code (to be created)
-├── tests/              # Test files (to be created)
-├── CLAUDE.md          # This file
+├── datos/                 # Data directory (ignored by git, protected by GitHub Action)
+├── .venv/                 # Python virtual environment
+├── .github/workflows/     # GitHub Actions (CI/CD)
+├── src/                   # Source code
+├── tests/                 # Unit and integration tests
+├── CLAUDE.md              # This file
 ├── README.md
 ├── LICENSE
-├── .gitignore
-└── requirements.txt    # Python dependencies (to be created)
+├── .gitignore             # Git exclusions
+├── .coveragerc            # Test coverage configuration
+├── pytest.ini             # Pytest configuration
+├── requirements.txt       # Production dependencies
+└── requirements-dev.txt   # Development dependencies
 ```
 
 ## Data Management
@@ -51,32 +55,42 @@ epmaps/
 
 ## Common Development Tasks
 
-### Running Python Code
-
+### Activate Environment
 ```bash
-python script.py
+source .venv/bin/activate
 ```
 
-### Running Tests (when added)
-
+### Running Tests
 ```bash
-pytest tests/
-pytest tests/test_specific.py  # Run specific test file
+pytest                              # Run all tests
+pytest tests/                       # Run tests from directory
+pytest tests/test_analyzer.py       # Run specific test file
+pytest tests/ -v                    # Verbose output
+pytest tests/ --cov=src             # With coverage report
+pytest tests/ -m unit               # Run only unit tests
 ```
 
-### Code Quality (when tools are added)
+### Code Quality
 
 ```bash
-black src/             # Format code
-pylint src/            # Lint code
-mypy src/              # Type checking
+black src/ tests/       # Format code
+pylint src/             # Lint code
+mypy src/               # Type checking
 ```
 
-## Next Steps
+## Testing Guidelines
 
-As the project grows, add:
-- `requirements.txt` with dependencies
-- `requirements-dev.txt` with development tools (pytest, black, etc.)
-- Source code in `src/` directory
-- Tests in `tests/` directory
-- Documentation in README.md
+- **Create tests for every new feature** (required)
+- Tests go in `tests/` directory with naming pattern: `test_<module>.py`
+- Use pytest markers for organization: `@pytest.mark.unit`, `@pytest.mark.integration`
+- Coverage goal: Maintain high test coverage for all new code
+- Test files follow same structure as source: `src/analyzer.py` → `tests/test_analyzer.py`
+
+## Data Management
+
+- **Location**: All project data goes in the `datos/` directory
+- **Git Protection**: 
+  - `.gitignore` prevents local commits
+  - GitHub Action (`protect-data-folder.yml`) blocks any push attempts
+  - **The `datos/` folder will NEVER be committed to cloud**
+- **Structure**: Organize data files by type or experiment within `datos/` subdirectories
