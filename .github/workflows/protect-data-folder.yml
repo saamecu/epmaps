@@ -1,0 +1,61 @@
+name: Protect Data Folder
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main, develop ]
+
+jobs:
+  check-data-folder:
+    runs-on: ubuntu-latest
+    name: Ensure datos/ folder is never committed
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Check for datos/ folder changes
+        run: |
+          # Get the list of changed files
+          if [ "${{ github.event_name }}" == "pull_request" ]; then
+            # For PRs, compare against the base branch
+            CHANGED_FILES=$(git diff --name-only origin/${{ github.base_ref }}...HEAD)
+          else
+            # For pushes, compare against the previous commit
+            if [ "${{ github.event.before }}" == "0000000000000000000000000000000000000000" ]; then
+              # Initial push - check all files
+              CHANGED_FILES=$(git ls-files)
+            else
+              CHANGED_FILES=$(git diff --name-only ${{ github.event.before }}..HEAD)
+            fi
+          fi
+
+          # Check if any files are in the datos/ folder
+          if echo "$CHANGED_FILES" | grep -q "^datos/"; then
+            echo "❌ ERROR: Attempting to commit files from the 'datos/' folder!"
+            echo ""
+            echo "Files detected in datos/:"
+            echo "$CHANGED_FILES" | grep "^datos/" || true
+            echo ""
+            echo "The 'datos/' folder must NEVER be committed to the repository."
+            echo "This folder is protected and all files in it are ignored by .gitignore"
+            echo ""
+            echo "To fix this:"
+            echo "1. Remove these changes from your commit"
+            echo "2. Ensure .gitignore is properly configured to ignore datos/*"
+            exit 1
+          fi
+
+          echo "✅ No files from datos/ folder detected in commit"
+
+      - name: Verify .gitignore configuration
+        run: |
+          if ! grep -q "^datos/\*" .gitignore; then
+            echo "⚠️  WARNING: .gitignore does not properly ignore the datos/ folder"
+            echo "Please ensure .gitignore contains: datos/*"
+          else
+            echo "✅ .gitignore properly configured to ignore datos/ folder"
+          fi
