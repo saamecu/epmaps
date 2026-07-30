@@ -947,7 +947,7 @@ def export_report(
     and anomaly detection into a single shareable document.
     """
     try:
-        console.print(f"\n[bold cyan]Building report from:[/bold cyan] {directory}\n")
+        console.print(f"\n[bold cyan]Generando reporte desde:[/bold cyan] {directory}\n")
 
         exporter = ReportExporter.from_directory(
             directory,
@@ -957,11 +957,11 @@ def export_report(
 
         if export_format in ("excel", "both"):
             excel_path = exporter.export_excel(f"{output}.xlsx")
-            console.print(f"[green]✓ Excel report saved:[/green] {excel_path}")
+            console.print(f"[green]✓ Reporte Excel guardado:[/green] {excel_path}")
 
         if export_format in ("pdf", "both"):
             pdf_path = exporter.export_pdf(f"{output}.pdf")
-            console.print(f"[green]✓ PDF report saved:[/green] {pdf_path}")
+            console.print(f"[green]✓ Reporte PDF guardado:[/green] {pdf_path}")
 
         console.print()
 

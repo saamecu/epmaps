@@ -111,7 +111,7 @@ class TestExcelExport:
             exporter_full.export_excel(filepath)
 
             wb = load_workbook(filepath)
-            expected_sheets = ["Summary", "Monthly Detail", "Categories", "Forecast", "Anomalies"]
+            expected_sheets = ["Resumen", "Detalle Mensual", "Categorías", "Pronóstico", "Anomalías"]
             for sheet in expected_sheets:
                 assert sheet in wb.sheetnames
 
@@ -122,43 +122,43 @@ class TestExcelExport:
             exporter_minimal.export_excel(filepath)
 
             wb = load_workbook(filepath)
-            assert "Summary" in wb.sheetnames
-            assert "Forecast" not in wb.sheetnames
-            assert "Anomalies" not in wb.sheetnames
+            assert "Resumen" in wb.sheetnames
+            assert "Pronóstico" not in wb.sheetnames
+            assert "Anomalías" not in wb.sheetnames
 
     def test_excel_summary_sheet_has_data(self, exporter_full):
-        """Test Summary sheet contains expected metric labels."""
+        """Test Resumen sheet contains expected metric labels."""
         with TemporaryDirectory() as tmpdir:
             filepath = f"{tmpdir}/report.xlsx"
             exporter_full.export_excel(filepath)
 
             wb = load_workbook(filepath)
-            ws = wb["Summary"]
+            ws = wb["Resumen"]
 
             labels = [ws.cell(row=r, column=1).value for r in range(1, 20)]
-            assert "Total Revenue" in labels
-            assert "Peak Month" in labels
+            assert "Ingresos Totales" in labels
+            assert "Mes Pico" in labels
 
     def test_excel_monthly_sheet_has_all_months(self, exporter_full):
-        """Test Monthly Detail sheet has a row per month."""
+        """Test Detalle Mensual sheet has a row per month."""
         with TemporaryDirectory() as tmpdir:
             filepath = f"{tmpdir}/report.xlsx"
             exporter_full.export_excel(filepath)
 
             wb = load_workbook(filepath)
-            ws = wb["Monthly Detail"]
+            ws = wb["Detalle Mensual"]
 
             months_in_sheet = [ws.cell(row=r, column=1).value for r in range(2, 14)]
             assert months_in_sheet.count(None) == 0
 
     def test_excel_categories_sheet_has_data(self, exporter_full):
-        """Test Categories sheet has category rows."""
+        """Test Categorías sheet has category rows."""
         with TemporaryDirectory() as tmpdir:
             filepath = f"{tmpdir}/report.xlsx"
             exporter_full.export_excel(filepath)
 
             wb = load_workbook(filepath)
-            ws = wb["Categories"]
+            ws = wb["Categorías"]
 
             rubros = [ws.cell(row=r, column=1).value for r in range(2, 12)]
             assert "AG01" in rubros or "AL01" in rubros

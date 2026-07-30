@@ -31,12 +31,30 @@ HEADER_FILL = "3B82F6"
 ACCENT_FILL = "06B6D4"
 LIGHT_FILL = "F8FAFC"
 
+TREND_LABELS = {
+    "increasing": "CRECIENTE",
+    "decreasing": "DECRECIENTE",
+    "stable": "ESTABLE",
+}
+
+SEVERITY_LABELS = {
+    "high": "Alto",
+    "medium": "Medio",
+    "low": "Bajo",
+}
+
+ALERT_TYPE_LABELS = {
+    "revenue": "Ingresos",
+    "price": "Precio",
+    "category": "Categoría",
+}
+
 
 class ReportExporter:
     """Exports yearly analysis, forecasts, and anomalies to Excel and PDF.
 
     Combines data from YearlyAnalyzer, Forecaster, and AnomalyDetector
-    into professional, shareable report documents.
+    into professional, shareable report documents (in Spanish).
     """
 
     def __init__(
@@ -83,8 +101,8 @@ class ReportExporter:
     def export_excel(self, filepath: str) -> str:
         """Export comprehensive report to Excel workbook.
 
-        Creates multiple sheets: Summary, Monthly Detail, Categories,
-        Forecast (if available), Anomalies (if available).
+        Creates multiple sheets: Resumen, Detalle Mensual, Categorías,
+        Pronóstico (if available), Anomalías (if available).
 
         Args:
             filepath: Path to save the .xlsx file.
@@ -125,31 +143,31 @@ class ReportExporter:
             ws.column_dimensions[get_column_letter(col)].width = width
 
     def _build_summary_sheet(self, wb: Workbook) -> None:
-        """Build the Summary sheet with yearly metrics."""
-        ws = wb.create_sheet("Summary")
+        """Build the Resumen sheet with yearly metrics."""
+        ws = wb.create_sheet("Resumen")
         metrics = self.analyzer.yearly_metrics()
 
-        ws["A1"] = "EPMaps Yearly Analysis - Summary"
+        ws["A1"] = "EPMaps - Análisis Anual - Resumen"
         ws["A1"].font = Font(bold=True, size=16, color=HEADER_FILL)
         ws.merge_cells("A1:B1")
 
         rows = [
-            ("Total Revenue", f"${metrics['total_revenue']:,.0f}"),
-            ("Average Monthly Revenue", f"${metrics['avg_monthly_revenue']:,.0f}"),
-            ("Std Dev Monthly Revenue", f"${metrics['std_monthly_revenue']:,.0f}"),
-            ("Coefficient of Variation", f"{metrics['cv_monthly_revenue']:.1f}%"),
-            ("Min Monthly Revenue", f"${metrics['min_monthly_revenue']:,.0f}"),
-            ("Max Monthly Revenue", f"${metrics['max_monthly_revenue']:,.0f}"),
-            ("Peak Month", metrics['peak_month']),
-            ("Low Month", metrics['low_month']),
-            ("Total Records", f"{metrics['total_records']:,}"),
-            ("Total Invoices", f"{metrics['total_invoices']:,}"),
-            ("Avg Lines per Invoice", f"{metrics['avg_lines_per_invoice']:.2f}"),
+            ("Ingresos Totales", f"${metrics['total_revenue']:,.0f}"),
+            ("Ingreso Promedio Mensual", f"${metrics['avg_monthly_revenue']:,.0f}"),
+            ("Desviación Estándar Mensual", f"${metrics['std_monthly_revenue']:,.0f}"),
+            ("Coeficiente de Variación", f"{metrics['cv_monthly_revenue']:.1f}%"),
+            ("Ingreso Mensual Mínimo", f"${metrics['min_monthly_revenue']:,.0f}"),
+            ("Ingreso Mensual Máximo", f"${metrics['max_monthly_revenue']:,.0f}"),
+            ("Mes Pico", metrics['peak_month']),
+            ("Mes Bajo", metrics['low_month']),
+            ("Registros Totales", f"{metrics['total_records']:,}"),
+            ("Facturas Totales", f"{metrics['total_invoices']:,}"),
+            ("Líneas Promedio por Factura", f"{metrics['avg_lines_per_invoice']:.2f}"),
         ]
 
         start_row = 3
-        ws.cell(row=start_row, column=1, value="Metric")
-        ws.cell(row=start_row, column=2, value="Value")
+        ws.cell(row=start_row, column=1, value="Métrica")
+        ws.cell(row=start_row, column=2, value="Valor")
         self._style_header_row(ws, start_row, 2)
 
         for i, (label, value) in enumerate(rows, start=start_row + 1):
@@ -164,12 +182,12 @@ class ReportExporter:
         self._autofit_columns(ws, 2, width=30)
 
     def _build_monthly_sheet(self, wb: Workbook) -> None:
-        """Build the Monthly Detail sheet with a revenue chart."""
-        ws = wb.create_sheet("Monthly Detail")
+        """Build the Detalle Mensual sheet with a revenue chart."""
+        ws = wb.create_sheet("Detalle Mensual")
         metrics = self.analyzer.yearly_metrics()['monthly_metrics']
         changes = self.analyzer.monthly_changes()
 
-        headers = ["Month", "Revenue", "Records", "Invoices", "Avg Price", "MoM Change %"]
+        headers = ["Mes", "Ingresos", "Registros", "Facturas", "Precio Promedio", "Cambio Mensual %"]
         for col, header in enumerate(headers, start=1):
             ws.cell(row=1, column=col, value=header)
         self._style_header_row(ws, 1, len(headers))
@@ -189,9 +207,9 @@ class ReportExporter:
         # Revenue trend chart
         n_months = len(self.analyzer.months)
         chart = LineChart()
-        chart.title = "Monthly Revenue Trend"
-        chart.y_axis.title = "Revenue ($)"
-        chart.x_axis.title = "Month"
+        chart.title = "Tendencia de Ingresos Mensuales"
+        chart.y_axis.title = "Ingresos ($)"
+        chart.x_axis.title = "Mes"
 
         data = Reference(ws, min_col=2, min_row=1, max_row=n_months + 1)
         cats = Reference(ws, min_col=1, min_row=2, max_row=n_months + 1)
@@ -203,11 +221,11 @@ class ReportExporter:
         ws.add_chart(chart, f"H2")
 
     def _build_categories_sheet(self, wb: Workbook) -> None:
-        """Build the Categories sheet with top category breakdown."""
-        ws = wb.create_sheet("Categories")
+        """Build the Categorías sheet with top category breakdown."""
+        ws = wb.create_sheet("Categorías")
         top_cats = self.analyzer.top_categories_yearly(top_n=10)
 
-        headers = ["Category", "Total Revenue", "% of Total", "CV %", "Min Month", "Max Month", "Records"]
+        headers = ["Categoría", "Ingresos Totales", "% del Total", "CV %", "Mes Mínimo", "Mes Máximo", "Registros"]
         for col, header in enumerate(headers, start=1):
             ws.cell(row=1, column=col, value=header)
         self._style_header_row(ws, 1, len(headers))
@@ -226,9 +244,9 @@ class ReportExporter:
         # Category revenue bar chart
         n_cats = len(top_cats)
         chart = BarChart()
-        chart.title = "Revenue by Category"
-        chart.y_axis.title = "Revenue ($)"
-        chart.x_axis.title = "Category"
+        chart.title = "Ingresos por Categoría"
+        chart.y_axis.title = "Ingresos ($)"
+        chart.x_axis.title = "Categoría"
 
         data_ref = Reference(ws, min_col=2, min_row=1, max_row=n_cats + 1)
         cats_ref = Reference(ws, min_col=1, min_row=2, max_row=n_cats + 1)
@@ -240,28 +258,28 @@ class ReportExporter:
         ws.add_chart(chart, "I2")
 
     def _build_forecast_sheet(self, wb: Workbook) -> None:
-        """Build the Forecast sheet with predictions."""
-        ws = wb.create_sheet("Forecast")
+        """Build the Pronóstico sheet with predictions."""
+        ws = wb.create_sheet("Pronóstico")
         forecast = self.forecaster.get_forecast_summary(periods=3)
         trends = self.forecaster.get_trends()
 
-        ws["A1"] = "Q1 Forecast & Trend Analysis"
+        ws["A1"] = "Pronóstico Q1 y Análisis de Tendencia"
         ws["A1"].font = Font(bold=True, size=16, color=HEADER_FILL)
         ws.merge_cells("A1:D1")
 
-        ws["A3"] = "Trend Type"
-        ws["B3"] = trends['trend_type'].upper()
-        ws["A4"] = "Annual % Change"
+        ws["A3"] = "Tipo de Tendencia"
+        ws["B3"] = TREND_LABELS.get(trends['trend_type'], trends['trend_type'].upper())
+        ws["A4"] = "Cambio Anual %"
         ws["B4"] = f"{trends['annual_pct_change']:.1f}%"
-        ws["A5"] = "Volatility (CV)"
+        ws["A5"] = "Volatilidad (CV)"
         ws["B5"] = f"{trends['volatility_cv']:.1f}%"
-        ws["A6"] = "Seasonality Strength"
+        ws["A6"] = "Fuerza de Estacionalidad"
         ws["B6"] = f"{trends['seasonality_strength']:.1f}%"
 
         for row in range(3, 7):
             ws.cell(row=row, column=1).font = Font(bold=True)
 
-        headers = ["Month", "Forecast", "Lower Bound", "Upper Bound"]
+        headers = ["Mes", "Pronóstico", "Límite Inferior", "Límite Superior"]
         start_row = 8
         for col, header in enumerate(headers, start=1):
             ws.cell(row=start_row, column=col, value=header)
@@ -276,25 +294,25 @@ class ReportExporter:
         self._autofit_columns(ws, len(headers), width=20)
 
     def _build_anomalies_sheet(self, wb: Workbook) -> None:
-        """Build the Anomalies sheet with detection results."""
-        ws = wb.create_sheet("Anomalies")
+        """Build the Anomalías sheet with detection results."""
+        ws = wb.create_sheet("Anomalías")
         report = self.detector.get_overall_anomaly_report()
 
-        ws["A1"] = "Anomaly Detection Report"
+        ws["A1"] = "Reporte de Detección de Anomalías"
         ws["A1"].font = Font(bold=True, size=16, color=HEADER_FILL)
         ws.merge_cells("A1:D1")
 
-        ws["A3"] = "Risk Level"
-        ws["B3"] = report['risk_level'].upper()
-        ws["A4"] = "Risk Score"
+        ws["A3"] = "Nivel de Riesgo"
+        ws["B3"] = SEVERITY_LABELS.get(report['risk_level'], report['risk_level'].upper())
+        ws["A4"] = "Puntuación de Riesgo"
         ws["B4"] = f"{report['risk_score']:.1f}/100"
-        ws["A5"] = "Total Anomalies"
+        ws["A5"] = "Anomalías Totales"
         ws["B5"] = report['total_anomalies_detected']
 
         for row in range(3, 6):
             ws.cell(row=row, column=1).font = Font(bold=True)
 
-        headers = ["Type", "Month", "Value", "Z-Score", "Deviation %", "Severity"]
+        headers = ["Tipo", "Mes", "Valor", "Z-Score", "Desviación %", "Severidad"]
         start_row = 7
         for col, header in enumerate(headers, start=1):
             ws.cell(row=start_row, column=col, value=header)
@@ -302,21 +320,21 @@ class ReportExporter:
 
         row_idx = start_row + 1
         for month, anom in report['revenue_anomalies'].get('anomalies', {}).items():
-            ws.cell(row=row_idx, column=1, value="Revenue")
+            ws.cell(row=row_idx, column=1, value="Ingresos")
             ws.cell(row=row_idx, column=2, value=month)
             ws.cell(row=row_idx, column=3, value=round(anom['revenue'], 2))
             ws.cell(row=row_idx, column=4, value=round(anom['z_score'], 2))
             ws.cell(row=row_idx, column=5, value=round(anom['deviation_from_mean_pct'], 1))
-            ws.cell(row=row_idx, column=6, value=anom['severity'])
+            ws.cell(row=row_idx, column=6, value=SEVERITY_LABELS.get(anom['severity'], anom['severity']))
             row_idx += 1
 
         for month, anom in report['price_anomalies'].get('anomalies', {}).items():
-            ws.cell(row=row_idx, column=1, value="Price")
+            ws.cell(row=row_idx, column=1, value="Precio")
             ws.cell(row=row_idx, column=2, value=month)
             ws.cell(row=row_idx, column=3, value=round(anom['avg_price'], 2))
             ws.cell(row=row_idx, column=4, value=round(anom['z_score'], 2))
             ws.cell(row=row_idx, column=5, value=round(anom['deviation_from_mean_pct'], 1))
-            ws.cell(row=row_idx, column=6, value=anom['severity'])
+            ws.cell(row=row_idx, column=6, value=SEVERITY_LABELS.get(anom['severity'], anom['severity']))
             row_idx += 1
 
         self._autofit_columns(ws, len(headers), width=16)
@@ -325,12 +343,12 @@ class ReportExporter:
     # PDF Export
     # ------------------------------------------------------------------
 
-    def export_pdf(self, filepath: str, title: str = "EPMaps Yearly Analysis Report") -> str:
+    def export_pdf(self, filepath: str, title: str = "Reporte de Análisis Anual EPMaps") -> str:
         """Export comprehensive report to PDF document.
 
         Args:
             filepath: Path to save the .pdf file.
-            title: Report title (default: "EPMaps Yearly Analysis Report").
+            title: Report title (default: "Reporte de Análisis Anual EPMaps").
 
         Returns:
             Path to the saved file.
@@ -366,7 +384,7 @@ class ReportExporter:
         elements.append(Paragraph(title, title_style))
         elements.append(
             Paragraph(
-                f"Period: Months {self.analyzer.months[0]}-{self.analyzer.months[-1]}",
+                f"Período: Meses {self.analyzer.months[0]}-{self.analyzer.months[-1]}",
                 ParagraphStyle("Subtitle", parent=body_style, alignment=TA_CENTER, textColor=colors.grey),
             )
         )
@@ -406,20 +424,20 @@ class ReportExporter:
         return TableStyle(style)
 
     def _pdf_summary_section(self, heading_style) -> list:
-        """Build Summary section for PDF."""
+        """Build Resumen Anual section for PDF."""
         metrics = self.analyzer.yearly_metrics()
-        elements = [Paragraph("Yearly Summary", heading_style)]
+        elements = [Paragraph("Resumen Anual", heading_style)]
 
         data = [
-            ["Metric", "Value"],
-            ["Total Revenue", f"${metrics['total_revenue']:,.0f}"],
-            ["Average Monthly Revenue", f"${metrics['avg_monthly_revenue']:,.0f}"],
-            ["Coefficient of Variation", f"{metrics['cv_monthly_revenue']:.1f}%"],
-            ["Peak Month", f"{metrics['peak_month']} (${metrics['max_monthly_revenue']:,.0f})"],
-            ["Low Month", f"{metrics['low_month']} (${metrics['min_monthly_revenue']:,.0f})"],
-            ["Total Records", f"{metrics['total_records']:,}"],
-            ["Total Invoices", f"{metrics['total_invoices']:,}"],
-            ["Avg Lines per Invoice", f"{metrics['avg_lines_per_invoice']:.2f}"],
+            ["Métrica", "Valor"],
+            ["Ingresos Totales", f"${metrics['total_revenue']:,.0f}"],
+            ["Ingreso Promedio Mensual", f"${metrics['avg_monthly_revenue']:,.0f}"],
+            ["Coeficiente de Variación", f"{metrics['cv_monthly_revenue']:.1f}%"],
+            ["Mes Pico", f"{metrics['peak_month']} (${metrics['max_monthly_revenue']:,.0f})"],
+            ["Mes Bajo", f"{metrics['low_month']} (${metrics['min_monthly_revenue']:,.0f})"],
+            ["Registros Totales", f"{metrics['total_records']:,}"],
+            ["Facturas Totales", f"{metrics['total_invoices']:,}"],
+            ["Líneas Promedio por Factura", f"{metrics['avg_lines_per_invoice']:.2f}"],
         ]
 
         table = Table(data, colWidths=[3 * inch, 3 * inch])
@@ -428,13 +446,13 @@ class ReportExporter:
         return elements
 
     def _pdf_monthly_section(self, heading_style) -> list:
-        """Build Monthly Progression section for PDF."""
+        """Build Progresión Mensual section for PDF."""
         metrics = self.analyzer.yearly_metrics()['monthly_metrics']
         changes = self.analyzer.monthly_changes()
 
-        elements = [Paragraph("Monthly Progression", heading_style)]
+        elements = [Paragraph("Progresión Mensual", heading_style)]
 
-        data = [["Month", "Revenue", "Records", "Avg Price", "MoM %"]]
+        data = [["Mes", "Ingresos", "Registros", "Precio Prom.", "Cambio %"]]
         for month in self.analyzer.months:
             m = metrics[month]
             change = changes[month].get('revenue_change')
@@ -453,12 +471,12 @@ class ReportExporter:
         return elements
 
     def _pdf_categories_section(self, heading_style) -> list:
-        """Build Top Categories section for PDF."""
+        """Build Top 5 Categorías section for PDF."""
         top_cats = self.analyzer.top_categories_yearly(top_n=5)
 
-        elements = [Paragraph("Top 5 Categories", heading_style)]
+        elements = [Paragraph("Top 5 Categorías", heading_style)]
 
-        data = [["Category", "Total Revenue", "% of Total", "Variability"]]
+        data = [["Categoría", "Ingresos Totales", "% del Total", "Variabilidad"]]
         for rubro, cat_data in top_cats.items():
             data.append([
                 rubro,
@@ -473,22 +491,23 @@ class ReportExporter:
         return elements
 
     def _pdf_forecast_section(self, heading_style) -> list:
-        """Build Forecast section for PDF."""
+        """Build Pronóstico Q1 y Tendencias section for PDF."""
         forecast = self.forecaster.get_forecast_summary(periods=3)
         trends = self.forecaster.get_trends()
 
-        elements = [Paragraph("Q1 Forecast & Trends", heading_style)]
+        elements = [Paragraph("Pronóstico Q1 y Tendencias", heading_style)]
 
+        trend_label = TREND_LABELS.get(trends['trend_type'], trends['trend_type'].upper())
         elements.append(Paragraph(
-            f"Trend: <b>{trends['trend_type'].upper()}</b> "
-            f"({trends['annual_pct_change']:+.1f}% annual change) | "
-            f"Volatility: {trends['volatility_cv']:.1f}% | "
-            f"Seasonality: {trends['seasonality_strength']:.1f}%",
+            f"Tendencia: <b>{trend_label}</b> "
+            f"({trends['annual_pct_change']:+.1f}% de cambio anual) | "
+            f"Volatilidad: {trends['volatility_cv']:.1f}% | "
+            f"Estacionalidad: {trends['seasonality_strength']:.1f}%",
             getSampleStyleSheet()["BodyText"],
         ))
         elements.append(Spacer(1, 0.15 * inch))
 
-        data = [["Month", "Forecast", "Lower Bound", "Upper Bound"]]
+        data = [["Mes", "Pronóstico", "Límite Inferior", "Límite Superior"]]
         for month, fdata in forecast['revenue_forecast'].items():
             data.append([
                 month,
@@ -503,34 +522,35 @@ class ReportExporter:
 
         elements.append(Spacer(1, 0.1 * inch))
         elements.append(Paragraph(
-            f"Projected Total: <b>${forecast['projected_total_revenue']:,.0f}</b>",
+            f"Total Proyectado: <b>${forecast['projected_total_revenue']:,.0f}</b>",
             getSampleStyleSheet()["BodyText"],
         ))
         return elements
 
     def _pdf_anomalies_section(self, heading_style) -> list:
-        """Build Anomalies section for PDF."""
+        """Build Detección de Anomalías section for PDF."""
         report = self.detector.get_overall_anomaly_report()
         alerts = self.detector.get_alerts(severity="all")
 
-        elements = [Paragraph("Anomaly Detection", heading_style)]
+        elements = [Paragraph("Detección de Anomalías", heading_style)]
 
+        risk_label = SEVERITY_LABELS.get(report['risk_level'], report['risk_level'].upper())
         elements.append(Paragraph(
-            f"Risk Level: <b>{report['risk_level'].upper()}</b> "
+            f"Nivel de Riesgo: <b>{risk_label}</b> "
             f"({report['risk_score']:.1f}/100) | "
-            f"Total Anomalies: {report['total_anomalies_detected']}",
+            f"Anomalías Totales: {report['total_anomalies_detected']}",
             getSampleStyleSheet()["BodyText"],
         ))
         elements.append(Spacer(1, 0.15 * inch))
 
         if alerts:
-            data = [["Type", "Month", "Severity", "Message"]]
+            data = [["Tipo", "Mes", "Severidad", "Mensaje"]]
             for alert in alerts[:15]:
                 data.append([
-                    alert['type'].capitalize(),
+                    ALERT_TYPE_LABELS.get(alert['type'], alert['type'].capitalize()),
                     alert.get('month', '—'),
-                    alert['severity'].capitalize(),
-                    alert['message'][:60] + ("..." if len(alert['message']) > 60 else ""),
+                    SEVERITY_LABELS.get(alert['severity'], alert['severity'].capitalize()),
+                    alert['message'][:70] + ("..." if len(alert['message']) > 70 else ""),
                 ])
 
             table = Table(data, colWidths=[0.9 * inch, 0.8 * inch, 0.9 * inch, 3.9 * inch])
@@ -540,6 +560,6 @@ class ReportExporter:
             table.setStyle(style)
             elements.append(table)
         else:
-            elements.append(Paragraph("No significant anomalies detected.", getSampleStyleSheet()["BodyText"]))
+            elements.append(Paragraph("No se detectaron anomalías significativas.", getSampleStyleSheet()["BodyText"]))
 
         return elements

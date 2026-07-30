@@ -316,8 +316,8 @@ class AnomalyDetector:
                     "type": "revenue",
                     "month": month,
                     "severity": anom['severity'],
-                    "message": f"Revenue in {month} is {anom['deviation_from_mean_pct']:.1f}% "
-                              f"from average (Z-score: {anom['z_score']:.2f})",
+                    "message": f"Los ingresos en el mes {month} están {anom['deviation_from_mean_pct']:+.1f}% "
+                              f"respecto al promedio (Z-score: {anom['z_score']:.2f})",
                 })
 
         # Price alerts
@@ -327,8 +327,8 @@ class AnomalyDetector:
                     "type": "price",
                     "month": month,
                     "severity": anom['severity'],
-                    "message": f"Average price in {month} is {anom['deviation_from_mean_pct']:.1f}% "
-                              f"from average (Z-score: {anom['z_score']:.2f})",
+                    "message": f"El precio promedio en el mes {month} está {anom['deviation_from_mean_pct']:+.1f}% "
+                              f"respecto al promedio (Z-score: {anom['z_score']:.2f})",
                 })
 
         # Category alerts
@@ -340,7 +340,7 @@ class AnomalyDetector:
                         "category": category,
                         "month": month,
                         "severity": anom['severity'],
-                        "message": f"Category {category} in {month} shows unusual revenue "
+                        "message": f"La categoría {category} en el mes {month} muestra ingresos inusuales "
                                   f"(Z-score: {anom['z_score']:.2f})",
                     })
 
