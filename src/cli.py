@@ -10,6 +10,7 @@ from rich.table import Table
 from src.data_reader import DataReader
 from src.analyzer import DataAnalyzer
 from src.visualizer import DataVisualizer
+from src.yearly_analyzer import YearlyAnalyzer
 
 
 console = Console()
@@ -550,6 +551,88 @@ def dashboard(
             console.print(f"\n[green]Dashboard saved to: {output}[/green]\n")
         else:
             visualizer.show_chart(fig)
+
+    except Exception as e:
+        console.print(f"[bold red]Error:[/bold red] {e}")
+        raise click.Abort()
+
+
+@cli.command()
+@click.argument("directory", type=click.Path(exists=True))
+@click.option(
+    "--pattern",
+    default="Datalle*.txt",
+    help="Glob pattern for files (default: Datalle*.txt).",
+)
+@click.option(
+    "--exclude-v02",
+    is_flag=True,
+    default=True,
+    help="Exclude V02 files (default: True).",
+)
+@click.option(
+    "-o",
+    "--output",
+    type=click.Path(),
+    help="Output directory for reports (optional).",
+)
+def yearly_analysis(
+    directory: str,
+    pattern: str,
+    exclude_v02: bool,
+    output: Optional[str],
+) -> None:
+    """Analyze invoice data across entire year.
+
+    Processes all monthly data files in a directory and generates:
+    - Yearly metrics and trends
+    - Month-over-month changes
+    - Category evolution
+    - Price analysis
+    - Anomaly detection
+    """
+    try:
+        console.print(f"\n[bold cyan]Loading yearly data from:[/bold cyan] {directory}")
+        console.print(f"[cyan]Pattern:[/cyan] {pattern} | [cyan]Exclude V02:[/cyan] {exclude_v02}\n")
+
+        analyzer = YearlyAnalyzer.from_directory(
+            directory,
+            pattern=pattern,
+            exclude_v02=exclude_v02,
+        )
+
+        console.print(f"[green]✓ Loaded {len(analyzer.months)} months of data[/green]\n")
+
+        # Generate and display report
+        report = analyzer.generate_yearly_report()
+        console.print(report)
+
+        # Save report if output specified
+        if output:
+            output_path = Path(output)
+            output_path.mkdir(parents=True, exist_ok=True)
+
+            # Save text report
+            report_file = output_path / "yearly_analysis.txt"
+            with open(report_file, "w") as f:
+                f.write(report)
+
+            # Save JSON data
+            import json
+
+            json_file = output_path / "yearly_analysis.json"
+            detailed = {
+                "yearly_metrics": analyzer.yearly_metrics(),
+                "monthly_changes": analyzer.monthly_changes(),
+                "top_categories": analyzer.top_categories_yearly(),
+                "price_evolution": analyzer.price_evolution(),
+                "anomalies": analyzer.anomalies_by_month(),
+            }
+            with open(json_file, "w") as f:
+                json.dump(detailed, f, indent=2, default=str)
+
+            console.print(f"[green]✓ Text report saved to:[/green] {report_file}")
+            console.print(f"[green]✓ JSON data saved to:[/green] {json_file}\n")
 
     except Exception as e:
         console.print(f"[bold red]Error:[/bold red] {e}")
