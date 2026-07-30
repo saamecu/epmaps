@@ -11,6 +11,8 @@ from src.data_reader import DataReader
 from src.analyzer import DataAnalyzer
 from src.visualizer import DataVisualizer
 from src.yearly_analyzer import YearlyAnalyzer
+from src.forecaster import Forecaster
+from src.anomaly_detector import AnomalyDetector
 
 
 console = Console()
@@ -633,6 +635,170 @@ def yearly_analysis(
 
             console.print(f"[green]✓ Text report saved to:[/green] {report_file}")
             console.print(f"[green]✓ JSON data saved to:[/green] {json_file}\n")
+
+    except Exception as e:
+        console.print(f"[bold red]Error:[/bold red] {e}")
+        raise click.Abort()
+
+
+@cli.command()
+@click.argument("directory", type=click.Path(exists=True))
+@click.option(
+    "--periods",
+    type=int,
+    default=3,
+    help="Number of months to forecast (default: 3 for Q1).",
+)
+@click.option(
+    "-o",
+    "--output",
+    type=click.Path(),
+    help="Output file for forecast results (optional).",
+)
+def forecast_q1(directory: str, periods: int, output: Optional[str]) -> None:
+    """Forecast Q1 revenue and trends based on historical data.
+
+    Predicts monthly revenue, prices, and trends for next quarter.
+    """
+    try:
+        console.print(f"\n[bold cyan]Forecasting next {periods} months from:[/bold cyan] {directory}\n")
+
+        forecaster = Forecaster.from_directory(directory)
+
+        # Get forecast
+        forecast_summary = forecaster.get_forecast_summary(periods)
+        trends = forecaster.get_trends()
+
+        # Display forecast
+        console.print("[bold cyan]FORECAST SUMMARY[/bold cyan]")
+        console.print(f"Base Period: Months {forecast_summary['base_period']}")
+        console.print(
+            f"Historical Average: ${forecast_summary['historical_avg_monthly']:>12,.0f}"
+        )
+        console.print(f"Historical Std Dev: ${forecast_summary['historical_std_monthly']:>12,.0f}")
+        console.print()
+
+        # Trends
+        console.print("[bold cyan]TREND ANALYSIS[/bold cyan]")
+        console.print(f"Trend Type: {trends['trend_type'].upper()}")
+        console.print(f"Annual % Change: {trends['annual_pct_change']:.1f}%")
+        console.print(f"Volatility (CV): {trends['volatility_cv']:.1f}%")
+        console.print(f"Seasonality Strength: {trends['seasonality_strength']:.1f}%")
+        console.print()
+
+        # Forecast table
+        console.print("[bold cyan]REVENUE FORECAST[/bold cyan]")
+        table = Table(title="Monthly Predictions", show_header=True, header_style="bold cyan")
+        table.add_column("Month", style="cyan")
+        table.add_column("Forecast", justify="right", style="green")
+        table.add_column("Lower Bound", justify="right")
+        table.add_column("Upper Bound", justify="right")
+
+        total_forecast = 0
+        for month, forecast in forecast_summary['revenue_forecast'].items():
+            table.add_row(
+                month,
+                f"${forecast['forecast']:,.0f}",
+                f"${forecast['lower_bound']:,.0f}",
+                f"${forecast['upper_bound']:,.0f}",
+            )
+            total_forecast += forecast['forecast']
+
+        console.print(table)
+        console.print(
+            f"\n[green]Projected Total Q1:[/green] ${total_forecast:,.0f}\n"
+        )
+
+        # Save if output specified
+        if output:
+            import json
+
+            with open(output, 'w') as f:
+                json.dump(forecast_summary, f, indent=2, default=str)
+            console.print(f"[green]✓ Forecast saved to:[/green] {output}\n")
+
+    except Exception as e:
+        console.print(f"[bold red]Error:[/bold red] {e}")
+        raise click.Abort()
+
+
+@cli.command()
+@click.argument("directory", type=click.Path(exists=True))
+@click.option(
+    "--severity",
+    type=click.Choice(["high", "medium", "all"]),
+    default="high",
+    help="Minimum severity level for alerts (default: high).",
+)
+@click.option(
+    "-o",
+    "--output",
+    type=click.Path(),
+    help="Output file for anomaly report (optional).",
+)
+def detect_anomalies(directory: str, severity: str, output: Optional[str]) -> None:
+    """Detect anomalies and generate alerts for unusual patterns.
+
+    Identifies revenue, price, volume, and category anomalies.
+    """
+    try:
+        console.print(f"\n[bold cyan]Detecting anomalies in:[/bold cyan] {directory}\n")
+
+        detector = AnomalyDetector.from_directory(directory)
+
+        # Get report
+        report = detector.get_overall_anomaly_report()
+        alerts = detector.get_alerts(severity=severity)
+
+        # Display summary
+        console.print("[bold cyan]ANOMALY DETECTION SUMMARY[/bold cyan]")
+        console.print(f"Risk Level: {report['risk_level'].upper()}")
+        console.print(f"Risk Score: {report['risk_score']:.1f}/100")
+        console.print(f"Total Anomalies: {report['total_anomalies_detected']}")
+        console.print()
+
+        # Alerts
+        if alerts:
+            console.print(f"[bold yellow]ALERTS ({severity.upper()}):[/bold yellow]")
+            for i, alert in enumerate(alerts, 1):
+                emoji = "🔴" if alert['severity'] == "high" else "🟡"
+                console.print(f"{emoji} [{alert['type'].upper()}] {alert['message']}")
+        else:
+            console.print("[green]✓ No significant anomalies detected[/green]")
+
+        console.print()
+
+        # Revenue anomalies
+        rev_anom = report['revenue_anomalies']['anomalies']
+        if rev_anom:
+            console.print("[bold cyan]REVENUE ANOMALIES[/bold cyan]")
+            for month, anom in sorted(rev_anom.items()):
+                severity_color = "red" if anom['severity'] == "high" else "yellow"
+                console.print(
+                    f"[{severity_color}]Month {month}:[/{severity_color}] "
+                    f"${anom['revenue']:,.0f} ({anom['deviation_from_mean_pct']:+.1f}%)"
+                )
+            console.print()
+
+        # Price anomalies
+        price_anom = report['price_anomalies']['anomalies']
+        if price_anom:
+            console.print("[bold cyan]PRICE ANOMALIES[/bold cyan]")
+            for month, anom in sorted(price_anom.items()):
+                severity_color = "red" if anom['severity'] == "high" else "yellow"
+                console.print(
+                    f"[{severity_color}]Month {month}:[/{severity_color}] "
+                    f"${anom['avg_price']:.2f} ({anom['deviation_from_mean_pct']:+.1f}%)"
+                )
+            console.print()
+
+        # Save if output specified
+        if output:
+            import json
+
+            with open(output, 'w') as f:
+                json.dump(report, f, indent=2, default=str)
+            console.print(f"[green]✓ Report saved to:[/green] {output}\n")
 
     except Exception as e:
         console.print(f"[bold red]Error:[/bold red] {e}")
