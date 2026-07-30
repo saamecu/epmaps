@@ -329,4 +329,4 @@ class TestEdgeCases:
 
         report = detector.get_overall_anomaly_report()
         # With constant data, should detect no anomalies
-        assert report['anomaly_count'] == 0 or report['risk_level'] == 'low'
+        assert report['total_anomalies_detected'] == 0 or report['risk_level'] == 'low'
