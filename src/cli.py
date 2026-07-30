@@ -13,6 +13,7 @@ from src.visualizer import DataVisualizer
 from src.yearly_analyzer import YearlyAnalyzer
 from src.forecaster import Forecaster
 from src.anomaly_detector import AnomalyDetector
+from src.forecast_visualizer import ForecastVisualizer
 
 
 console = Console()
@@ -799,6 +800,103 @@ def detect_anomalies(directory: str, severity: str, output: Optional[str]) -> No
             with open(output, 'w') as f:
                 json.dump(report, f, indent=2, default=str)
             console.print(f"[green]✓ Report saved to:[/green] {output}\n")
+
+    except Exception as e:
+        console.print(f"[bold red]Error:[/bold red] {e}")
+        raise click.Abort()
+
+
+@cli.command()
+@click.argument("directory", type=click.Path(exists=True))
+@click.option(
+    "--periods",
+    type=int,
+    default=3,
+    help="Number of months to forecast (default: 3).",
+)
+@click.option(
+    "-o",
+    "--output",
+    type=click.Path(),
+    default="forecast_visualization.html",
+    help="Output file for visualization (default: forecast_visualization.html).",
+)
+def visualize_forecast(directory: str, periods: int, output: str) -> None:
+    """Create interactive forecast visualizations.
+
+    Generates HTML charts with revenue, price, and trend forecasts.
+    """
+    try:
+        console.print(f"\n[bold cyan]Creating forecast visualizations:[/bold cyan] {directory}\n")
+
+        forecaster = Forecaster.from_directory(directory)
+        detector = AnomalyDetector.from_directory(directory)
+        viz = ForecastVisualizer(forecaster, detector)
+
+        # Create main forecast chart
+        fig = viz.plot_revenue_forecast(periods)
+        viz.save_chart(fig, output)
+
+        console.print(f"[green]✓ Revenue forecast chart saved:[/green] {output}")
+
+        # Create other visualizations
+        price_file = output.replace('.html', '_price.html')
+        fig_price = viz.plot_price_forecast(periods)
+        viz.save_chart(fig_price, price_file)
+        console.print(f"[green]✓ Price forecast chart saved:[/green] {price_file}")
+
+        trend_file = output.replace('.html', '_trend.html')
+        fig_trend = viz.plot_trend_analysis()
+        viz.save_chart(fig_trend, trend_file)
+        console.print(f"[green]✓ Trend analysis chart saved:[/green] {trend_file}")
+
+        dashboard_file = output.replace('.html', '_dashboard.html')
+        fig_dashboard = viz.plot_risk_dashboard()
+        viz.save_chart(fig_dashboard, dashboard_file)
+        console.print(f"[green]✓ Risk dashboard saved:[/green] {dashboard_file}\n")
+
+    except Exception as e:
+        console.print(f"[bold red]Error:[/bold red] {e}")
+        raise click.Abort()
+
+
+@cli.command()
+@click.argument("directory", type=click.Path(exists=True))
+@click.option(
+    "--periods",
+    type=int,
+    default=3,
+    help="Number of months to forecast (default: 3).",
+)
+@click.option(
+    "-o",
+    "--output",
+    type=click.Path(),
+    default="anomaly_heatmap.html",
+    help="Output file for heatmap (default: anomaly_heatmap.html).",
+)
+def visualize_anomalies(directory: str, periods: int, output: str) -> None:
+    """Create anomaly detection heatmap and risk visualizations.
+
+    Generates HTML charts showing detected anomalies and risk assessment.
+    """
+    try:
+        console.print(f"\n[bold cyan]Creating anomaly visualizations:[/bold cyan] {directory}\n")
+
+        forecaster = Forecaster.from_directory(directory)
+        detector = AnomalyDetector.from_directory(directory)
+        viz = ForecastVisualizer(forecaster, detector)
+
+        # Anomaly heatmap
+        fig_heatmap = viz.plot_anomalies_heatmap()
+        viz.save_chart(fig_heatmap, output)
+        console.print(f"[green]✓ Anomaly heatmap saved:[/green] {output}")
+
+        # Risk dashboard
+        risk_file = output.replace('.html', '_risk.html')
+        fig_risk = viz.plot_risk_dashboard()
+        viz.save_chart(fig_risk, risk_file)
+        console.print(f"[green]✓ Risk dashboard saved:[/green] {risk_file}\n")
 
     except Exception as e:
         console.print(f"[bold red]Error:[/bold red] {e}")
