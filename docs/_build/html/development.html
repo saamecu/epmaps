@@ -45,6 +45,7 @@
               <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="getting_started.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cli_guide.html">CLI Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="api/index.html">API Reference</a></li>
 <li class="toctree-l1"><a class="reference internal" href="api/index.html#module-src.data_reader">Data Reader Module</a></li>
 <li class="toctree-l1"><a class="reference internal" href="api/index.html#module-src.analyzer">Data Analyzer Module</a></li>
@@ -70,6 +71,11 @@
 <li class="toctree-l2"><a class="reference internal" href="#git-workflow">Git Workflow</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#project-structure">Project Structure</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#virtual-environment">Virtual Environment</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#cli-development">CLI Development</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#adding-a-new-command">Adding a New Command</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#testing-cli-commands">Testing CLI Commands</a></li>
+</ul>
+</li>
 <li class="toctree-l2"><a class="reference internal" href="#common-tasks">Common Tasks</a></li>
 </ul>
 </li>
@@ -309,6 +315,50 @@ make<span class="w"> </span>html
 deactivate
 </pre></div>
 </div>
+</section>
+<section id="cli-development">
+<h2>CLI Development<a class="headerlink" href="#cli-development" title="Link to this heading"></a></h2>
+<p>The CLI is built using Click. Commands are defined in <code class="docutils literal notranslate"><span class="pre">src/cli.py</span></code>.</p>
+<section id="adding-a-new-command">
+<h3>Adding a New Command<a class="headerlink" href="#adding-a-new-command" title="Link to this heading"></a></h3>
+<ol class="arabic simple">
+<li><p>Define the command function with <code class="docutils literal notranslate"><span class="pre">&#64;click.command()</span></code> decorator</p></li>
+<li><p>Add options with <code class="docutils literal notranslate"><span class="pre">&#64;click.option()</span></code></p></li>
+<li><p>Add arguments with <code class="docutils literal notranslate"><span class="pre">&#64;click.argument()</span></code></p></li>
+<li><p>Use the Rich library for formatted output</p></li>
+<li><p>Add tests in <code class="docutils literal notranslate"><span class="pre">tests/test_cli.py</span></code></p></li>
+</ol>
+<p>Example:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nd">@cli</span><span class="o">.</span><span class="n">command</span><span class="p">()</span>
+<span class="nd">@click</span><span class="o">.</span><span class="n">argument</span><span class="p">(</span><span class="s2">&quot;file_path&quot;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="n">click</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span><span class="n">exists</span><span class="o">=</span><span class="kc">True</span><span class="p">))</span>
+<span class="nd">@click</span><span class="o">.</span><span class="n">option</span><span class="p">(</span><span class="s2">&quot;-o&quot;</span><span class="p">,</span> <span class="s2">&quot;--output&quot;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="n">click</span><span class="o">.</span><span class="n">Path</span><span class="p">())</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">new_command</span><span class="p">(</span><span class="n">file_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">output</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Description of what this command does.&quot;&quot;&quot;</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">analyzer</span> <span class="o">=</span> <span class="n">DataAnalyzer</span><span class="o">.</span><span class="n">from_file</span><span class="p">(</span><span class="n">file_path</span><span class="p">)</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">analyzer</span><span class="o">.</span><span class="n">some_method</span><span class="p">()</span>
+        <span class="n">console</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+    <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="n">console</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;[bold red]Error:[/bold red] </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="n">click</span><span class="o">.</span><span class="n">Abort</span><span class="p">()</span>
+</pre></div>
+</div>
+</section>
+<section id="testing-cli-commands">
+<h3>Testing CLI Commands<a class="headerlink" href="#testing-cli-commands" title="Link to this heading"></a></h3>
+<p>Use the CliRunner to test commands:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">click.testing</span><span class="w"> </span><span class="kn">import</span> <span class="n">CliRunner</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">src.cli</span><span class="w"> </span><span class="kn">import</span> <span class="n">cli</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">test_my_command</span><span class="p">(</span><span class="n">tmp_path</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Test my_command.&quot;&quot;&quot;</span>
+    <span class="n">runner</span> <span class="o">=</span> <span class="n">CliRunner</span><span class="p">()</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="n">runner</span><span class="o">.</span><span class="n">invoke</span><span class="p">(</span><span class="n">cli</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;my-command&quot;</span><span class="p">,</span> <span class="s2">&quot;data.txt&quot;</span><span class="p">])</span>
+    <span class="k">assert</span> <span class="n">result</span><span class="o">.</span><span class="n">exit_code</span> <span class="o">==</span> <span class="mi">0</span>
+    <span class="k">assert</span> <span class="s2">&quot;Expected output&quot;</span> <span class="ow">in</span> <span class="n">result</span><span class="o">.</span><span class="n">output</span>
+</pre></div>
+</div>
+</section>
 </section>
 <section id="common-tasks">
 <h2>Common Tasks<a class="headerlink" href="#common-tasks" title="Link to this heading"></a></h2>

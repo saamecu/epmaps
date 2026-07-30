@@ -10,6 +10,7 @@ This project provides tools to read, analyze, and compare large datasets of invo
    :caption: Contents:
 
    getting_started
+   cli_guide
    api/index
    development
 

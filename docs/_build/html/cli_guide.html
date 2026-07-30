@@ -1,0 +1,391 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CLI Guide &mdash; EPMaps 0.1.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=9edc463e" />
+
+  
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=01f34227"></script>
+      <script src="_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="API Reference" href="api/index.html" />
+    <link rel="prev" title="Getting Started" href="getting_started.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #2980B9" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            EPMaps
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="getting_started.html">Getting Started</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">CLI Guide</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#installation">Installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#quick-reference">Quick Reference</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#commands">Commands</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#info">info</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#stats">stats</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#group">group</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#top">top</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#compare">compare</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#report">report</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#global-options">Global Options</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#examples">Examples</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#analyze-invoice-data">Analyze Invoice Data</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#compare-months">Compare Months</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#generate-reports">Generate Reports</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#troubleshooting">Troubleshooting</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#file-not-found">File Not Found</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#column-not-found">Column Not Found</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#invalid-period">Invalid Period</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#tips">Tips</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="api/index.html">API Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/index.html#module-src.data_reader">Data Reader Module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/index.html#module-src.analyzer">Data Analyzer Module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="development.html">Development Guide</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="api/src.data_reader.html">src.data_reader</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: #2980B9" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">EPMaps</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">CLI Guide</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/cli_guide.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="cli-guide">
+<h1>CLI Guide<a class="headerlink" href="#cli-guide" title="Link to this heading"></a></h1>
+<p>The EPMaps command-line interface provides powerful tools for analyzing invoice data.</p>
+<section id="installation">
+<h2>Installation<a class="headerlink" href="#installation" title="Link to this heading"></a></h2>
+<p>The CLI is available after installing the project:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip<span class="w"> </span>install<span class="w"> </span>-r<span class="w"> </span>requirements.txt
+python<span class="w"> </span>main.py<span class="w"> </span>--help
+</pre></div>
+</div>
+</section>
+<section id="quick-reference">
+<h2>Quick Reference<a class="headerlink" href="#quick-reference" title="Link to this heading"></a></h2>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># File information</span>
+python<span class="w"> </span>main.py<span class="w"> </span>info<span class="w"> </span>datos/Datalle<span class="se">\ </span><span class="m">0125</span>.txt
+
+<span class="c1"># Summary statistics</span>
+python<span class="w"> </span>main.py<span class="w"> </span>stats<span class="w"> </span>datos/Datalle<span class="se">\ </span><span class="m">0125</span>.txt
+
+<span class="c1"># Group by category</span>
+python<span class="w"> </span>main.py<span class="w"> </span>group<span class="w"> </span>datos/Datalle<span class="se">\ </span><span class="m">0125</span>.txt<span class="w"> </span>-g<span class="w"> </span>RUBRO
+
+<span class="c1"># Top items</span>
+python<span class="w"> </span>main.py<span class="w"> </span>top<span class="w"> </span>datos/Datalle<span class="se">\ </span><span class="m">0125</span>.txt<span class="w"> </span>-n<span class="w"> </span><span class="m">10</span>
+
+<span class="c1"># Compare periods</span>
+python<span class="w"> </span>main.py<span class="w"> </span>compare<span class="w"> </span>datos/Datalle<span class="se">\ </span><span class="m">0125</span>.txt<span class="w"> </span><span class="m">001</span><span class="w"> </span><span class="m">002</span>
+
+<span class="c1"># Generate report</span>
+python<span class="w"> </span>main.py<span class="w"> </span>report<span class="w"> </span>datos/Datalle<span class="se">\ </span><span class="m">0125</span>.txt<span class="w"> </span>-o<span class="w"> </span>report.txt
+</pre></div>
+</div>
+</section>
+<section id="commands">
+<h2>Commands<a class="headerlink" href="#commands" title="Link to this heading"></a></h2>
+<section id="info">
+<h3>info<a class="headerlink" href="#info" title="Link to this heading"></a></h3>
+<p>Display information about a data file.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python<span class="w"> </span>main.py<span class="w"> </span>info<span class="w"> </span>&lt;FILE_PATH&gt;
+</pre></div>
+</div>
+<p>Shows:</p>
+<ul class="simple">
+<li><p>File path</p></li>
+<li><p>File size in MB</p></li>
+<li><p>Number of columns</p></li>
+<li><p>Column names</p></li>
+</ul>
+<p>Example:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python<span class="w"> </span>main.py<span class="w"> </span>info<span class="w"> </span>datos/Datalle<span class="se">\ </span><span class="m">0125</span>.txt
+</pre></div>
+</div>
+</section>
+<section id="stats">
+<h3>stats<a class="headerlink" href="#stats" title="Link to this heading"></a></h3>
+<p>Display summary statistics for a data file.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python<span class="w"> </span>main.py<span class="w"> </span>stats<span class="w"> </span>&lt;FILE_PATH&gt;<span class="w"> </span><span class="o">[</span>OPTIONS<span class="o">]</span>
+</pre></div>
+</div>
+<p>Options:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">-c,</span> <span class="pre">--column</span></code> TEXT: Column to calculate statistics on (default: PRECIO_TOTAL)</p></li>
+</ul>
+<p>Shows:</p>
+<ul class="simple">
+<li><p>Count: Number of values</p></li>
+<li><p>Sum: Total of all values</p></li>
+<li><p>Mean: Average value</p></li>
+<li><p>Median: Middle value</p></li>
+<li><p>Std: Standard deviation</p></li>
+<li><p>Min: Minimum value</p></li>
+<li><p>Max: Maximum value</p></li>
+</ul>
+<p>Example:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python<span class="w"> </span>main.py<span class="w"> </span>stats<span class="w"> </span>datos/Datalle<span class="se">\ </span><span class="m">0125</span>.txt<span class="w"> </span>-c<span class="w"> </span>PRECIO_TOTAL
+</pre></div>
+</div>
+</section>
+<section id="group">
+<h3>group<a class="headerlink" href="#group" title="Link to this heading"></a></h3>
+<p>Group and aggregate data by a column.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python<span class="w"> </span>main.py<span class="w"> </span>group<span class="w"> </span>&lt;FILE_PATH&gt;<span class="w"> </span><span class="o">[</span>OPTIONS<span class="o">]</span>
+</pre></div>
+</div>
+<p>Options:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">-g,</span> <span class="pre">--group-by</span></code> TEXT: Column to group by (default: RUBRO)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-v,</span> <span class="pre">--value-column</span></code> TEXT: Column with values to aggregate (default: PRECIO_TOTAL)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-a,</span> <span class="pre">--aggregation</span></code> [sum|mean|count|min|max]: Aggregation method (default: sum)</p></li>
+</ul>
+<p>Shows a table with grouped results.</p>
+<p>Example:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python<span class="w"> </span>main.py<span class="w"> </span>group<span class="w"> </span>datos/Datalle<span class="se">\ </span><span class="m">0125</span>.txt<span class="w"> </span>-g<span class="w"> </span>RUBRO<span class="w"> </span>-a<span class="w"> </span>sum
+</pre></div>
+</div>
+</section>
+<section id="top">
+<h3>top<a class="headerlink" href="#top" title="Link to this heading"></a></h3>
+<p>Display top N items by value.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python<span class="w"> </span>main.py<span class="w"> </span>top<span class="w"> </span>&lt;FILE_PATH&gt;<span class="w"> </span><span class="o">[</span>OPTIONS<span class="o">]</span>
+</pre></div>
+</div>
+<p>Options:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">-g,</span> <span class="pre">--group-by</span></code> TEXT: Column to group by (default: RUBRO)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-v,</span> <span class="pre">--value-column</span></code> TEXT: Column with values to sort by (default: PRECIO_TOTAL)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-n,</span> <span class="pre">--number</span></code> INTEGER: Number of top items (default: 10)</p></li>
+</ul>
+<p>Shows a ranked table with top N items.</p>
+<p>Example:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python<span class="w"> </span>main.py<span class="w"> </span>top<span class="w"> </span>datos/Datalle<span class="se">\ </span><span class="m">0125</span>.txt<span class="w"> </span>-n<span class="w"> </span><span class="m">15</span><span class="w"> </span>-g<span class="w"> </span>RUBRO
+</pre></div>
+</div>
+</section>
+<section id="compare">
+<h3>compare<a class="headerlink" href="#compare" title="Link to this heading"></a></h3>
+<p>Compare data between two periods.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python<span class="w"> </span>main.py<span class="w"> </span>compare<span class="w"> </span>&lt;FILE_PATH&gt;<span class="w"> </span>&lt;PERIOD1&gt;<span class="w"> </span>&lt;PERIOD2&gt;<span class="w"> </span><span class="o">[</span>OPTIONS<span class="o">]</span>
+</pre></div>
+</div>
+<p>Options:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">-p,</span> <span class="pre">--period-column</span></code> TEXT: Period column name (default: MONTH)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-v,</span> <span class="pre">--value-column</span></code> TEXT: Column to compare (default: PRECIO_TOTAL)</p></li>
+</ul>
+<p>Shows:</p>
+<ul class="simple">
+<li><p>Total for each period</p></li>
+<li><p>Absolute difference</p></li>
+<li><p>Percentage change</p></li>
+</ul>
+<p>Example:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Compare months 001 and 002</span>
+python<span class="w"> </span>main.py<span class="w"> </span>compare<span class="w"> </span>datos/Datalle<span class="se">\ </span><span class="m">0125</span>.txt<span class="w"> </span><span class="m">001</span><span class="w"> </span><span class="m">002</span>
+
+<span class="c1"># Compare using custom period column</span>
+python<span class="w"> </span>main.py<span class="w"> </span>compare<span class="w"> </span>datos/Datalle<span class="se">\ </span><span class="m">0125</span>.txt<span class="w"> </span>Q1<span class="w"> </span>Q2<span class="w"> </span>-p<span class="w"> </span>QUARTER
+</pre></div>
+</div>
+</section>
+<section id="report">
+<h3>report<a class="headerlink" href="#report" title="Link to this heading"></a></h3>
+<p>Generate a comprehensive analysis report.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python<span class="w"> </span>main.py<span class="w"> </span>report<span class="w"> </span>&lt;FILE_PATH&gt;<span class="w"> </span><span class="o">[</span>OPTIONS<span class="o">]</span>
+</pre></div>
+</div>
+<p>Options:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">-o,</span> <span class="pre">--output</span></code> PATH: Output file path (optional)</p></li>
+</ul>
+<p>Includes:</p>
+<ul class="simple">
+<li><p>File metadata</p></li>
+<li><p>Summary statistics</p></li>
+<li><p>Top 5 categories by total</p></li>
+</ul>
+<p>If no output file is specified, the report is printed to console.</p>
+<p>Example:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Print report to console</span>
+python<span class="w"> </span>main.py<span class="w"> </span>report<span class="w"> </span>datos/Datalle<span class="se">\ </span><span class="m">0125</span>.txt
+
+<span class="c1"># Save report to file</span>
+python<span class="w"> </span>main.py<span class="w"> </span>report<span class="w"> </span>datos/Datalle<span class="se">\ </span><span class="m">0125</span>.txt<span class="w"> </span>-o<span class="w"> </span>report.txt
+</pre></div>
+</div>
+</section>
+</section>
+<section id="global-options">
+<h2>Global Options<a class="headerlink" href="#global-options" title="Link to this heading"></a></h2>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python<span class="w"> </span>main.py<span class="w"> </span>--version<span class="w">    </span><span class="c1"># Show version</span>
+python<span class="w"> </span>main.py<span class="w"> </span>--help<span class="w">       </span><span class="c1"># Show help</span>
+python<span class="w"> </span>main.py<span class="w"> </span>&lt;command&gt;<span class="w"> </span>--help<span class="w">  </span><span class="c1"># Help for specific command</span>
+</pre></div>
+</div>
+</section>
+<section id="examples">
+<h2>Examples<a class="headerlink" href="#examples" title="Link to this heading"></a></h2>
+<section id="analyze-invoice-data">
+<h3>Analyze Invoice Data<a class="headerlink" href="#analyze-invoice-data" title="Link to this heading"></a></h3>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># 1. Check file info</span>
+python<span class="w"> </span>main.py<span class="w"> </span>info<span class="w"> </span>datos/Datalle<span class="se">\ </span><span class="m">0125</span>.txt
+
+<span class="c1"># 2. Get statistics</span>
+python<span class="w"> </span>main.py<span class="w"> </span>stats<span class="w"> </span>datos/Datalle<span class="se">\ </span><span class="m">0125</span>.txt
+
+<span class="c1"># 3. See breakdown by rubro (category)</span>
+python<span class="w"> </span>main.py<span class="w"> </span>group<span class="w"> </span>datos/Datalle<span class="se">\ </span><span class="m">0125</span>.txt<span class="w"> </span>-g<span class="w"> </span>RUBRO<span class="w"> </span>-a<span class="w"> </span>sum
+
+<span class="c1"># 4. Get top 5 categories</span>
+python<span class="w"> </span>main.py<span class="w"> </span>top<span class="w"> </span>datos/Datalle<span class="se">\ </span><span class="m">0125</span>.txt<span class="w"> </span>-n<span class="w"> </span><span class="m">5</span>
+</pre></div>
+</div>
+</section>
+<section id="compare-months">
+<h3>Compare Months<a class="headerlink" href="#compare-months" title="Link to this heading"></a></h3>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Compare month 001 vs 002</span>
+python<span class="w"> </span>main.py<span class="w"> </span>compare<span class="w"> </span>datos/Datalle<span class="se">\ </span><span class="m">0125</span>.txt<span class="w"> </span><span class="m">001</span><span class="w"> </span><span class="m">002</span>
+
+<span class="c1"># Check which month had more sales in a specific category</span>
+python<span class="w"> </span>main.py<span class="w"> </span>group<span class="w"> </span>datos/Datalle<span class="se">\ </span><span class="m">0125</span>.txt<span class="w"> </span>-g<span class="w"> </span>RUBRO<span class="w"> </span>-v<span class="w"> </span>CANTIDAD<span class="w"> </span>-a<span class="w"> </span>sum
+</pre></div>
+</div>
+</section>
+<section id="generate-reports">
+<h3>Generate Reports<a class="headerlink" href="#generate-reports" title="Link to this heading"></a></h3>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Create summary report and save to file</span>
+python<span class="w"> </span>main.py<span class="w"> </span>report<span class="w"> </span>datos/Datalle<span class="se">\ </span><span class="m">0125</span>.txt<span class="w"> </span>-o<span class="w"> </span>analysis_report.txt
+
+<span class="c1"># Create report with custom aggregation</span>
+python<span class="w"> </span>main.py<span class="w"> </span>top<span class="w"> </span>datos/Datalle<span class="se">\ </span><span class="m">0125</span>.txt<span class="w"> </span>-n<span class="w"> </span><span class="m">20</span><span class="w"> </span>&gt;<span class="w"> </span>top_items.txt
+</pre></div>
+</div>
+</section>
+</section>
+<section id="troubleshooting">
+<h2>Troubleshooting<a class="headerlink" href="#troubleshooting" title="Link to this heading"></a></h2>
+<section id="file-not-found">
+<h3>File Not Found<a class="headerlink" href="#file-not-found" title="Link to this heading"></a></h3>
+<p><strong>Error:</strong> <code class="docutils literal notranslate"><span class="pre">Error:</span> <span class="pre">Invalid</span> <span class="pre">value</span> <span class="pre">for</span> <span class="pre">'FILE_PATH':</span> <span class="pre">Path</span> <span class="pre">'datos/file.txt'</span> <span class="pre">does</span> <span class="pre">not</span> <span class="pre">exist.</span></code></p>
+<p><strong>Solution:</strong> Make sure the file path is correct and the file exists:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>ls<span class="w"> </span>-la<span class="w"> </span>datos/
+</pre></div>
+</div>
+</section>
+<section id="column-not-found">
+<h3>Column Not Found<a class="headerlink" href="#column-not-found" title="Link to this heading"></a></h3>
+<p><strong>Error:</strong> <code class="docutils literal notranslate"><span class="pre">Error:</span> <span class="pre">Column</span> <span class="pre">'NONEXISTENT'</span> <span class="pre">not</span> <span class="pre">found</span></code></p>
+<p><strong>Solution:</strong> Use the <code class="docutils literal notranslate"><span class="pre">info</span></code> command to see available columns:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python<span class="w"> </span>main.py<span class="w"> </span>info<span class="w"> </span>datos/Datalle<span class="se">\ </span><span class="m">0125</span>.txt
+</pre></div>
+</div>
+</section>
+<section id="invalid-period">
+<h3>Invalid Period<a class="headerlink" href="#invalid-period" title="Link to this heading"></a></h3>
+<p><strong>Error:</strong> <code class="docutils literal notranslate"><span class="pre">Error:</span> <span class="pre">No</span> <span class="pre">data</span> <span class="pre">found</span> <span class="pre">for</span> <span class="pre">MONTH=999</span></code></p>
+<p><strong>Solution:</strong> Use the <code class="docutils literal notranslate"><span class="pre">compare</span></code> command with periods that exist in the data:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># First check what periods exist</span>
+python<span class="w"> </span>main.py<span class="w"> </span>group<span class="w"> </span>datos/Datalle<span class="se">\ </span><span class="m">0125</span>.txt<span class="w"> </span>-g<span class="w"> </span>MONTH<span class="w"> </span>-a<span class="w"> </span>count
+</pre></div>
+</div>
+</section>
+</section>
+<section id="tips">
+<h2>Tips<a class="headerlink" href="#tips" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p>Use <code class="docutils literal notranslate"><span class="pre">|</span> <span class="pre">grep</span></code> or <code class="docutils literal notranslate"><span class="pre">&gt;</span> <span class="pre">filename.txt</span></code> to save command output</p></li>
+<li><p>Use <code class="docutils literal notranslate"><span class="pre">-c</span></code> flag in stats to analyze different columns</p></li>
+<li><p>Use different aggregations (sum, mean, count) for different insights</p></li>
+<li><p>Save reports with <code class="docutils literal notranslate"><span class="pre">-o</span></code> flag for documentation and sharing</p></li>
+<li><p>Use <code class="docutils literal notranslate"><span class="pre">--help</span></code> on any command for detailed information</p></li>
+</ul>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="getting_started.html" class="btn btn-neutral float-left" title="Getting Started" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="api/index.html" class="btn btn-neutral float-right" title="API Reference" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2026, Santiago Andrade.</p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -228,6 +228,54 @@ Always work in the virtual environment:
    # Deactivate
    deactivate
 
+CLI Development
+~~~~~~~~~~~~~~~
+
+The CLI is built using Click. Commands are defined in ``src/cli.py``.
+
+Adding a New Command
+^^^^^^^^^^^^^^^^^^^^
+
+1. Define the command function with ``@click.command()`` decorator
+2. Add options with ``@click.option()``
+3. Add arguments with ``@click.argument()``
+4. Use the Rich library for formatted output
+5. Add tests in ``tests/test_cli.py``
+
+Example:
+
+.. code-block:: python
+
+   @cli.command()
+   @click.argument("file_path", type=click.Path(exists=True))
+   @click.option("-o", "--output", type=click.Path())
+   def new_command(file_path: str, output: str) -> None:
+       """Description of what this command does."""
+       try:
+           analyzer = DataAnalyzer.from_file(file_path)
+           result = analyzer.some_method()
+           console.print(result)
+       except Exception as e:
+           console.print(f"[bold red]Error:[/bold red] {e}")
+           raise click.Abort()
+
+Testing CLI Commands
+^^^^^^^^^^^^^^^^^^^^
+
+Use the CliRunner to test commands:
+
+.. code-block:: python
+
+   from click.testing import CliRunner
+   from src.cli import cli
+
+   def test_my_command(tmp_path):
+       """Test my_command."""
+       runner = CliRunner()
+       result = runner.invoke(cli, ["my-command", "data.txt"])
+       assert result.exit_code == 0
+       assert "Expected output" in result.output
+
 Common Tasks
 ~~~~~~~~~~~~
 
