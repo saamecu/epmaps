@@ -16,6 +16,7 @@ from src.anomaly_detector import AnomalyDetector
 from src.forecast_visualizer import ForecastVisualizer
 from src.report_exporter import ReportExporter
 from src.webapp import create_app
+from src.multi_year_analyzer import MultiYearAnalyzer
 
 
 console = Console()
@@ -1011,6 +1012,52 @@ def web_dashboard(
         console.print("[dim]Press CTRL+C to stop.[/dim]\n")
 
         app.run(host=host, port=port, debug=False)
+
+    except Exception as e:
+        console.print(f"[bold red]Error:[/bold red] {e}")
+        raise click.Abort()
+
+
+@cli.command()
+@click.argument("directory", type=click.Path(exists=True))
+@click.option(
+    "-o",
+    "--output",
+    type=click.Path(),
+    help="Output file for the comparison report (JSON, optional).",
+)
+def compare_years(directory: str, output: Optional[str]) -> None:
+    """Compare invoice data across every year found in a directory.
+
+    Auto-detects distinct years from "Datalle MMYY.txt" filenames and
+    reports year-over-year growth rates and seasonal consistency (e.g.
+    whether an August peak or a July dip repeats every year, or was a
+    one-off in a single year).
+    """
+    try:
+        console.print(f"\n[bold cyan]Scanning years in:[/bold cyan] {directory}\n")
+
+        analyzer = MultiYearAnalyzer.from_directory(directory)
+
+        console.print(f"[green]✓ Years found:[/green] {', '.join(analyzer.years)}\n")
+
+        report = analyzer.generate_comparison_report()
+        console.print(report)
+
+        if output:
+            import json
+
+            data = {
+                "years": analyzer.years,
+                "yearly_totals": analyzer.yearly_totals(),
+            }
+            if analyzer.is_multi_year():
+                data["growth_rates"] = analyzer.growth_rates()
+                data["seasonal_consistency"] = analyzer.seasonal_consistency()
+
+            with open(output, "w") as f:
+                json.dump(data, f, indent=2, default=str)
+            console.print(f"\n[green]✓ Comparison data saved to:[/green] {output}\n")
 
     except Exception as e:
         console.print(f"[bold red]Error:[/bold red] {e}")

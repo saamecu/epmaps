@@ -1,6 +1,6 @@
 """Yearly analyzer for multi-period invoice data analysis."""
 
-from typing import Dict, List, Tuple
+from typing import Dict, List, Optional, Tuple
 from pathlib import Path
 import pandas as pd
 import numpy as np
@@ -50,14 +50,46 @@ class YearlyAnalyzer:
         except:
             return pd.to_numeric(series, errors="coerce")
 
+    @staticmethod
+    def parse_period(file_stem: str) -> Tuple[str, str]:
+        """Parse month and 4-digit year out of a "Datalle MMYY" filename stem.
+
+        Args:
+            file_stem: Filename without extension, e.g. "Datalle 0125".
+
+        Returns:
+            Tuple of (month, year) as 2-char and 4-char strings, e.g. ("01", "2025").
+            Returns (None, None) if the stem doesn't match the expected pattern.
+        """
+        parts = file_stem.split()
+        if len(parts) < 2 or len(parts[1]) < 4:
+            return None, None
+
+        date_str = parts[1]
+        month = date_str[:2]
+        year = f"20{date_str[2:4]}"
+        return month, year
+
     @classmethod
-    def from_directory(cls, directory: str, pattern: str = "Datalle*.txt", exclude_v02: bool = True):
+    def from_directory(
+        cls,
+        directory: str,
+        pattern: str = "Datalle*.txt",
+        exclude_v02: bool = True,
+        year: Optional[str] = None,
+    ):
         """Create YearlyAnalyzer from directory of files.
 
         Args:
             directory: Path to directory containing data files.
             pattern: Glob pattern for files (default: Datalle*.txt).
             exclude_v02: Skip files with V02 in name (default: True).
+            year: If provided (e.g. "2025" or "25"), only load files whose
+                filename year matches — required when a directory holds
+                multiple years of files, since month codes ("01"-"12")
+                alone would otherwise collide across years. Defaults to
+                None, which loads every matched file regardless of year
+                (safe for single-year directories, matches prior behavior).
 
         Returns:
             YearlyAnalyzer instance with loaded data.
@@ -68,14 +100,18 @@ class YearlyAnalyzer:
         if exclude_v02:
             files = [f for f in files if "V02" not in f.name]
 
+        year_filter = None
+        if year is not None:
+            year_filter = f"20{year[-2:]}"
+
         month_data = {}
         for file_path in files:
-            # Extract month from filename (Datalle MMYY.txt or Datalle 0125.txt)
-            parts = file_path.stem.split()
-            if len(parts) >= 2:
-                date_str = parts[1]  # MMYY format
-                month_id = date_str[:2]  # MM
-                month_data[month_id] = DataAnalyzer.from_file(str(file_path))
+            month_id, file_year = cls.parse_period(file_path.stem)
+            if month_id is None:
+                continue
+            if year_filter is not None and file_year != year_filter:
+                continue
+            month_data[month_id] = DataAnalyzer.from_file(str(file_path))
 
         return cls(month_data)
 
