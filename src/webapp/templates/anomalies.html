@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+{% block title %}Anomalies - EPMaps Dashboard{% endblock %}
+{% block content %}
+
+<div class="header">
+    <h1>🔍 Anomaly Detection</h1>
+    <p>Risk Level: <span class="badge {{ report.risk_level }}">{{ report.risk_level|upper }}</span> · Score: {{ "%.1f"|format(report.risk_score) }}/100 · {{ report.total_anomalies_detected }} anomalies detected</p>
+</div>
+
+<div class="section">
+    <h2>Risk Dashboard</h2>
+    <div class="chart-wrap">{{ risk_chart|safe }}</div>
+</div>
+
+<div class="section">
+    <h2>Anomaly Heatmap</h2>
+    <div class="chart-wrap">{{ heatmap_chart|safe }}</div>
+</div>
+
+<div class="section">
+    <h2>Alerts</h2>
+    {% if alerts %}
+    <table>
+        <thead>
+            <tr><th>Type</th><th>Month</th><th>Severity</th><th>Message</th></tr>
+        </thead>
+        <tbody>
+            {% for alert in alerts %}
+            <tr>
+                <td>{{ alert.type|capitalize }}</td>
+                <td>{{ alert.month|default(alert.category, true) }}</td>
+                <td><span class="badge {{ alert.severity }}">{{ alert.severity|upper }}</span></td>
+                <td>{{ alert.message }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+    <div class="empty-state">No anomalies detected — data looks consistent.</div>
+    {% endif %}
+</div>
+
+{% endblock %}

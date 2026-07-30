@@ -29,6 +29,10 @@ class YearlyAnalyzer:
         self.month_data = month_data
         self.months = sorted(month_data.keys())
         self.patterns = {m: PatternAnalyzer(month_data[m]) for m in self.months}
+        self._yearly_metrics_cache: Dict = None
+        self._top_categories_cache: Dict = None
+        self._top_categories_cache_n: int = 0
+        self._price_evolution_cache: Dict = None
 
     def _to_numeric(self, series: pd.Series) -> pd.Series:
         """Safely convert series to numeric, handling pandas nullable types.
@@ -78,9 +82,16 @@ class YearlyAnalyzer:
     def yearly_metrics(self) -> Dict:
         """Calculate yearly aggregate metrics.
 
+        Scans every monthly DataFrame, so the result is cached after the
+        first call — repeated calls (including indirect ones from
+        monthly_changes(), Forecaster, and AnomalyDetector) are free.
+
         Returns:
             Dictionary with yearly statistics.
         """
+        if self._yearly_metrics_cache is not None:
+            return self._yearly_metrics_cache
+
         metrics = {}
 
         for month_id in self.months:
@@ -119,7 +130,7 @@ class YearlyAnalyzer:
         total_inv = sum(invoices)
         lines_per_inv = sum(records) / total_inv if total_inv > 0 else 0
 
-        return {
+        self._yearly_metrics_cache = {
             "monthly_metrics": metrics,
             "total_revenue": sum(revenues),
             "avg_monthly_revenue": mean_rev,
@@ -135,6 +146,7 @@ class YearlyAnalyzer:
             "peak_month": max(self.months, key=lambda m: metrics[m]["revenue"]),
             "low_month": min(self.months, key=lambda m: metrics[m]["revenue"]),
         }
+        return self._yearly_metrics_cache
 
     def monthly_changes(self) -> Dict:
         """Calculate month-over-month changes.
@@ -197,12 +209,20 @@ class YearlyAnalyzer:
     def top_categories_yearly(self, top_n: int = 5) -> Dict:
         """Get top categories across entire year.
 
+        Concatenates every monthly DataFrame, so the result is cached.
+        Categories are revenue-ordered, so a request for a smaller top_n
+        than what's already cached is served by slicing the cached dict
+        instead of re-scanning the full dataset.
+
         Args:
             top_n: Number of top categories to return.
 
         Returns:
             Dictionary with category statistics and trends.
         """
+        if self._top_categories_cache is not None and top_n <= self._top_categories_cache_n:
+            return dict(list(self._top_categories_cache.items())[:top_n])
+
         all_data = []
         for month_id in self.months:
             df = self.month_data[month_id].df.copy()
@@ -246,14 +266,22 @@ class YearlyAnalyzer:
                 "records_total": int(rubro_data.shape[0]),
             }
 
+        self._top_categories_cache = result
+        self._top_categories_cache_n = top_n
         return result
 
     def price_evolution(self) -> Dict:
         """Analyze price changes across months.
 
+        Scans every monthly DataFrame, so the result is cached after the
+        first call.
+
         Returns:
             Dictionary with monthly price statistics.
         """
+        if self._price_evolution_cache is not None:
+            return self._price_evolution_cache
+
         evolution = {}
 
         for month_id in self.months:
@@ -277,6 +305,7 @@ class YearlyAnalyzer:
                     "avg": 0, "median": 0, "std": 0, "min": 0, "max": 0, "q25": 0, "q75": 0
                 }
 
+        self._price_evolution_cache = evolution
         return evolution
 
     def anomalies_by_month(self) -> Dict:

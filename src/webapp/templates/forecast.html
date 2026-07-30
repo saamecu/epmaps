@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+{% block title %}Forecast - EPMaps Dashboard{% endblock %}
+{% block content %}
+
+<div class="header">
+    <h1>🚀 Q1 Forecast</h1>
+    <p>Base period: {{ summary.base_period }} · Trend: {{ trends.trend_type|upper }} ({{ "%+.1f"|format(trends.annual_pct_change) }}%)</p>
+</div>
+
+<div class="section">
+    <h2>Trend Summary</h2>
+    <div class="stat-grid">
+        <div class="stat-card">
+            <div class="stat-label">Projected Total (Q1)</div>
+            <div class="stat-value">${{ "{:,.0f}".format(summary.projected_total_revenue) }}</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-label">Projected Avg / Month</div>
+            <div class="stat-value">${{ "{:,.0f}".format(summary.projected_avg_monthly) }}</div>
+        </div>
+        <div class="stat-card {{ 'success' if trends.trend_type == 'increasing' else 'danger' if trends.trend_type == 'decreasing' else '' }}">
+            <div class="stat-label">Trend Type</div>
+            <div class="stat-value">{{ trends.trend_type|capitalize }}</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-label">Volatility (CV)</div>
+            <div class="stat-value">{{ "%.1f"|format(trends.volatility_cv) }}%</div>
+        </div>
+    </div>
+</div>
+
+<div class="section">
+    <h2>Revenue Forecast</h2>
+    <div class="chart-wrap">{{ revenue_chart|safe }}</div>
+</div>
+
+<div class="section">
+    <h2>Price Forecast</h2>
+    <div class="chart-wrap">{{ price_chart|safe }}</div>
+</div>
+
+<div class="section">
+    <h2>Monthly Detail</h2>
+    <table>
+        <thead>
+            <tr><th>Month</th><th class="number">Forecast</th><th class="number">Lower Bound</th><th class="number">Upper Bound</th></tr>
+        </thead>
+        <tbody>
+            {% for month, data in summary.revenue_forecast.items() %}
+            <tr>
+                <td><strong>{{ month }}</strong></td>
+                <td class="number">${{ "{:,.0f}".format(data.forecast) }}</td>
+                <td class="number">${{ "{:,.0f}".format(data.lower_bound) }}</td>
+                <td class="number">${{ "{:,.0f}".format(data.upper_bound) }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+{% endblock %}

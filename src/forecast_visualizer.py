@@ -291,7 +291,7 @@ class ForecastVisualizer:
                     ],
                     'threshold': {
                         'line': {'color': '#000'},
-                        'thickness': 4,
+                        'thickness': 0.75,
                         'value': 50,
                     },
                 },

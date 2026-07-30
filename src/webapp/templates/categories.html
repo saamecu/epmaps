@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+{% block title %}Categories - EPMaps Dashboard{% endblock %}
+{% block content %}
+
+<div class="header">
+    <h1>🏷️ Category Breakdown</h1>
+    <p>Top 10 categories by total yearly revenue</p>
+</div>
+
+<div class="section">
+    <h2>Revenue by Category</h2>
+    <div class="chart-wrap">{{ chart|safe }}</div>
+</div>
+
+<div class="section">
+    <h2>Category Detail</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Category</th>
+                <th class="number">Total Revenue</th>
+                <th class="number">% of Total</th>
+                <th class="number">Variability (CV)</th>
+                <th>Min Month</th>
+                <th>Max Month</th>
+                <th class="number">Records</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for rubro, data in categories.items() %}
+            <tr>
+                <td><strong>{{ rubro }}</strong></td>
+                <td class="number">${{ "{:,.0f}".format(data.total_revenue) }}</td>
+                <td class="number">{{ "%.1f"|format(data.pct_of_total) }}%</td>
+                <td class="number">{{ "%.1f"|format(data.cv_monthly) }}%</td>
+                <td>{{ data.min_month }}</td>
+                <td>{{ data.max_month }}</td>
+                <td class="number">{{ "{:,}".format(data.records_total) }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+{% endblock %}

@@ -15,6 +15,7 @@ from src.forecaster import Forecaster
 from src.anomaly_detector import AnomalyDetector
 from src.forecast_visualizer import ForecastVisualizer
 from src.report_exporter import ReportExporter
+from src.webapp import create_app
 
 
 console = Console()
@@ -962,6 +963,54 @@ def export_report(
             console.print(f"[green]✓ PDF report saved:[/green] {pdf_path}")
 
         console.print()
+
+    except Exception as e:
+        console.print(f"[bold red]Error:[/bold red] {e}")
+        raise click.Abort()
+
+
+@cli.command()
+@click.argument("directory", type=click.Path(exists=True))
+@click.option("--host", default="127.0.0.1", help="Host to bind (default: 127.0.0.1).")
+@click.option("--port", type=int, default=5000, help="Port to bind (default: 5000).")
+@click.option(
+    "--no-forecast",
+    is_flag=True,
+    default=False,
+    help="Skip loading the Forecast tab (faster startup).",
+)
+@click.option(
+    "--no-anomalies",
+    is_flag=True,
+    default=False,
+    help="Skip loading the Anomalies tab (faster startup).",
+)
+def web_dashboard(
+    directory: str,
+    host: str,
+    port: int,
+    no_forecast: bool,
+    no_anomalies: bool,
+) -> None:
+    """Launch the interactive EPMaps web dashboard.
+
+    Loads yearly data once at startup, then serves Overview, Categories,
+    Forecast, and Anomalies pages with live Plotly charts in the browser.
+    """
+    try:
+        console.print(f"\n[bold cyan]Loading data for dashboard:[/bold cyan] {directory}")
+        console.print("[dim]This may take a moment for large datasets...[/dim]\n")
+
+        app = create_app(
+            directory,
+            include_forecast=not no_forecast,
+            include_anomalies=not no_anomalies,
+        )
+
+        console.print(f"[green]✓ Dashboard ready at:[/green] http://{host}:{port}")
+        console.print("[dim]Press CTRL+C to stop.[/dim]\n")
+
+        app.run(host=host, port=port, debug=False)
 
     except Exception as e:
         console.print(f"[bold red]Error:[/bold red] {e}")

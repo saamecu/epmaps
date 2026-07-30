@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% block title %}{{ feature }} disabled - EPMaps Dashboard{% endblock %}
+{% block content %}
+
+<div class="header">
+    <h1>{{ feature }} Unavailable</h1>
+    <p>This dashboard was started without the {{ feature|lower }} module enabled.</p>
+</div>
+
+<div class="section">
+    <div class="empty-state">
+        Restart the dashboard without the corresponding <code>--no-forecast</code> or
+        <code>--no-anomalies</code> flag to enable this page.
+    </div>
+</div>
+
+{% endblock %}
