@@ -9,6 +9,7 @@ from rich.table import Table
 
 from src.data_reader import DataReader
 from src.analyzer import DataAnalyzer
+from src.visualizer import DataVisualizer
 
 
 console = Console()
@@ -296,6 +297,259 @@ def report(file_path: str, output: Optional[str]) -> None:
         if output:
             Path(output).write_text(report_text)
             console.print(f"\n[green]Report saved to: {output}[/green]\n")
+
+    except Exception as e:
+        console.print(f"[bold red]Error:[/bold red] {e}")
+        raise click.Abort()
+
+
+@cli.command()
+@click.argument("file_path", type=click.Path(exists=True))
+@click.option(
+    "-g",
+    "--group-by",
+    default="RUBRO",
+    help="Column to group by.",
+)
+@click.option(
+    "-v",
+    "--value-column",
+    default="PRECIO_TOTAL",
+    help="Column with values.",
+)
+@click.option(
+    "-n",
+    "--number",
+    type=int,
+    default=10,
+    help="Number of top items.",
+)
+@click.option(
+    "-o",
+    "--output",
+    type=click.Path(),
+    help="Output file path (optional).",
+)
+def chart_bar(
+    file_path: str,
+    group_by: str,
+    value_column: str,
+    number: int,
+    output: Optional[str],
+) -> None:
+    """Generate a bar chart of top items by value.
+
+    Creates an interactive HTML chart showing the top N items grouped by category.
+    """
+    try:
+        visualizer = DataVisualizer.from_file(file_path)
+        fig = visualizer.bar_chart_by_category(
+            category_column=group_by,
+            value_column=value_column,
+            n_top=number,
+        )
+
+        if output:
+            visualizer.save_chart(fig, output)
+            console.print(f"\n[green]Chart saved to: {output}[/green]\n")
+        else:
+            visualizer.show_chart(fig)
+
+    except Exception as e:
+        console.print(f"[bold red]Error:[/bold red] {e}")
+        raise click.Abort()
+
+
+@cli.command()
+@click.argument("file_path", type=click.Path(exists=True))
+@click.option(
+    "-p",
+    "--period-column",
+    default="MONTH",
+    help="Column with period identifiers.",
+)
+@click.option(
+    "-v",
+    "--value-column",
+    default="PRECIO_TOTAL",
+    help="Column with values.",
+)
+@click.option(
+    "-o",
+    "--output",
+    type=click.Path(),
+    help="Output file path (optional).",
+)
+def chart_trend(
+    file_path: str,
+    period_column: str,
+    value_column: str,
+    output: Optional[str],
+) -> None:
+    """Generate a line chart showing trends over time.
+
+    Creates an interactive HTML chart displaying values across periods.
+    """
+    try:
+        visualizer = DataVisualizer.from_file(file_path)
+        fig = visualizer.line_chart_trend(
+            period_column=period_column,
+            value_column=value_column,
+        )
+
+        if output:
+            visualizer.save_chart(fig, output)
+            console.print(f"\n[green]Chart saved to: {output}[/green]\n")
+        else:
+            visualizer.show_chart(fig)
+
+    except Exception as e:
+        console.print(f"[bold red]Error:[/bold red] {e}")
+        raise click.Abort()
+
+
+@cli.command()
+@click.argument("file_path", type=click.Path(exists=True))
+@click.option(
+    "-g",
+    "--group-by",
+    default="RUBRO",
+    help="Column to group by.",
+)
+@click.option(
+    "-v",
+    "--value-column",
+    default="PRECIO_TOTAL",
+    help="Column with values.",
+)
+@click.option(
+    "-o",
+    "--output",
+    type=click.Path(),
+    help="Output file path (optional).",
+)
+def chart_pie(
+    file_path: str,
+    group_by: str,
+    value_column: str,
+    output: Optional[str],
+) -> None:
+    """Generate a pie chart showing distribution by category.
+
+    Creates an interactive HTML chart displaying the proportion of values.
+    """
+    try:
+        visualizer = DataVisualizer.from_file(file_path)
+        fig = visualizer.pie_chart_distribution(
+            category_column=group_by,
+            value_column=value_column,
+        )
+
+        if output:
+            visualizer.save_chart(fig, output)
+            console.print(f"\n[green]Chart saved to: {output}[/green]\n")
+        else:
+            visualizer.show_chart(fig)
+
+    except Exception as e:
+        console.print(f"[bold red]Error:[/bold red] {e}")
+        raise click.Abort()
+
+
+@cli.command()
+@click.argument("file_path", type=click.Path(exists=True))
+@click.argument("period1", type=str)
+@click.argument("period2", type=str)
+@click.option(
+    "-p",
+    "--period-column",
+    default="MONTH",
+    help="Column with period identifiers.",
+)
+@click.option(
+    "-g",
+    "--group-by",
+    default="RUBRO",
+    help="Column to group by.",
+)
+@click.option(
+    "-v",
+    "--value-column",
+    default="PRECIO_TOTAL",
+    help="Column with values.",
+)
+@click.option(
+    "-o",
+    "--output",
+    type=click.Path(),
+    help="Output file path (optional).",
+)
+def chart_compare(
+    file_path: str,
+    period1: str,
+    period2: str,
+    period_column: str,
+    group_by: str,
+    value_column: str,
+    output: Optional[str],
+) -> None:
+    """Generate a comparison chart between two periods.
+
+    Creates an interactive HTML chart comparing values across categories.
+    """
+    try:
+        visualizer = DataVisualizer.from_file(file_path)
+        fig = visualizer.comparison_bar_chart(
+            period_column=period_column,
+            period1=period1,
+            period2=period2,
+            category_column=group_by,
+            value_column=value_column,
+        )
+
+        if output:
+            visualizer.save_chart(fig, output)
+            console.print(f"\n[green]Chart saved to: {output}[/green]\n")
+        else:
+            visualizer.show_chart(fig)
+
+    except Exception as e:
+        console.print(f"[bold red]Error:[/bold red] {e}")
+        raise click.Abort()
+
+
+@cli.command()
+@click.argument("file_path", type=click.Path(exists=True))
+@click.option(
+    "-v",
+    "--value-column",
+    default="PRECIO_TOTAL",
+    help="Column with values.",
+)
+@click.option(
+    "-o",
+    "--output",
+    type=click.Path(),
+    help="Output file path (optional).",
+)
+def dashboard(
+    file_path: str,
+    value_column: str,
+    output: Optional[str],
+) -> None:
+    """Generate a comprehensive dashboard with multiple visualizations.
+
+    Creates an interactive HTML dashboard with 4 visualizations.
+    """
+    try:
+        visualizer = DataVisualizer.from_file(file_path)
+        fig = visualizer.summary_dashboard(value_column=value_column)
+
+        if output:
+            visualizer.save_chart(fig, output)
+            console.print(f"\n[green]Dashboard saved to: {output}[/green]\n")
+        else:
+            visualizer.show_chart(fig)
 
     except Exception as e:
         console.print(f"[bold red]Error:[/bold red] {e}")

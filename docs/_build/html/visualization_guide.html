@@ -1,0 +1,440 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Data Visualization Guide &mdash; EPMaps 0.1.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=9edc463e" />
+
+  
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=01f34227"></script>
+      <script src="_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="API Reference" href="api/index.html" />
+    <link rel="prev" title="CLI Guide" href="cli_guide.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #2980B9" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            EPMaps
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="getting_started.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cli_guide.html">CLI Guide</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Data Visualization Guide</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#overview">Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#chart-types">Chart Types</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#bar-chart">Bar Chart</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#line-chart">Line Chart</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pie-chart">Pie Chart</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#comparison-chart">Comparison Chart</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#summary-dashboard">Summary Dashboard</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#python-api">Python API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#advanced-examples">Advanced Examples</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#create-and-save-multiple-charts">Create and Save Multiple Charts</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#compare-different-categories">Compare Different Categories</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#analyze-different-periods">Analyze Different Periods</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#tips-tricks">Tips &amp; Tricks</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#interactive-features">Interactive Features</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#browser-tips">Browser Tips</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#report-generation">Report Generation</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#performance-notes">Performance Notes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#troubleshooting">Troubleshooting</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#chart-not-displaying">Chart Not Displaying</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#chart-looks-wrong">Chart Looks Wrong</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#memory-issues">Memory Issues</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#missing-data-in-chart">Missing Data in Chart</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="api/index.html">API Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/index.html#module-src.data_reader">Data Reader Module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/index.html#module-src.analyzer">Data Analyzer Module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="development.html">Development Guide</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="api/src.data_reader.html">src.data_reader</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: #2980B9" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">EPMaps</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Data Visualization Guide</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/visualization_guide.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="data-visualization-guide">
+<h1>Data Visualization Guide<a class="headerlink" href="#data-visualization-guide" title="Link to this heading"></a></h1>
+<p>EPMaps provides interactive visualizations using Plotly for analyzing invoice data.</p>
+<section id="overview">
+<h2>Overview<a class="headerlink" href="#overview" title="Link to this heading"></a></h2>
+<p>The visualization module creates professional, interactive HTML charts that can be:</p>
+<ul class="simple">
+<li><p>Displayed in your browser</p></li>
+<li><p>Saved as standalone HTML files</p></li>
+<li><p>Embedded in reports</p></li>
+<li><p>Used for presentations</p></li>
+</ul>
+<p>All charts are interactive with hover information, zoom, and export options.</p>
+</section>
+<section id="chart-types">
+<h2>Chart Types<a class="headerlink" href="#chart-types" title="Link to this heading"></a></h2>
+<section id="bar-chart">
+<h3>Bar Chart<a class="headerlink" href="#bar-chart" title="Link to this heading"></a></h3>
+<p>Shows the top N items grouped by category.</p>
+<p><strong>Command:</strong></p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python<span class="w"> </span>main.py<span class="w"> </span>chart-bar<span class="w"> </span>&lt;FILE_PATH&gt;<span class="w"> </span><span class="o">[</span>OPTIONS<span class="o">]</span>
+</pre></div>
+</div>
+<p><strong>Options:</strong></p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">-g,</span> <span class="pre">--group-by</span></code>: Column to group by (default: RUBRO)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-v,</span> <span class="pre">--value-column</span></code>: Column with values (default: PRECIO_TOTAL)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-n,</span> <span class="pre">--number</span></code>: Number of top items (default: 10)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-o,</span> <span class="pre">--output</span></code>: Save chart to HTML file</p></li>
+</ul>
+<p><strong>Example:</strong></p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Show top 10 rubros in browser</span>
+python<span class="w"> </span>main.py<span class="w"> </span>chart-bar<span class="w"> </span>datos/Datalle<span class="se">\ </span><span class="m">0125</span>.txt
+
+<span class="c1"># Save top 5 to file</span>
+python<span class="w"> </span>main.py<span class="w"> </span>chart-bar<span class="w"> </span>datos/Datalle<span class="se">\ </span><span class="m">0125</span>.txt<span class="w"> </span>-n<span class="w"> </span><span class="m">5</span><span class="w"> </span>-o<span class="w"> </span>top_rubros.html
+
+<span class="c1"># Group by different column</span>
+python<span class="w"> </span>main.py<span class="w"> </span>chart-bar<span class="w"> </span>datos/Datalle<span class="se">\ </span><span class="m">0125</span>.txt<span class="w"> </span>-g<span class="w"> </span>MANDT<span class="w"> </span>-v<span class="w"> </span>CANTIDAD
+</pre></div>
+</div>
+</section>
+<section id="line-chart">
+<h3>Line Chart<a class="headerlink" href="#line-chart" title="Link to this heading"></a></h3>
+<p>Shows trends over time/periods.</p>
+<p><strong>Command:</strong></p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python<span class="w"> </span>main.py<span class="w"> </span>chart-trend<span class="w"> </span>&lt;FILE_PATH&gt;<span class="w"> </span><span class="o">[</span>OPTIONS<span class="o">]</span>
+</pre></div>
+</div>
+<p><strong>Options:</strong></p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">-p,</span> <span class="pre">--period-column</span></code>: Period column (default: MONTH)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-v,</span> <span class="pre">--value-column</span></code>: Column with values (default: PRECIO_TOTAL)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-o,</span> <span class="pre">--output</span></code>: Save chart to HTML file</p></li>
+</ul>
+<p><strong>Example:</strong></p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Show trend by month</span>
+python<span class="w"> </span>main.py<span class="w"> </span>chart-trend<span class="w"> </span>datos/Datalle<span class="se">\ </span><span class="m">0125</span>.txt
+
+<span class="c1"># Save trend to file</span>
+python<span class="w"> </span>main.py<span class="w"> </span>chart-trend<span class="w"> </span>datos/Datalle<span class="se">\ </span><span class="m">0125</span>.txt<span class="w"> </span>-o<span class="w"> </span>trend.html
+
+<span class="c1"># View trend by quantity</span>
+python<span class="w"> </span>main.py<span class="w"> </span>chart-trend<span class="w"> </span>datos/Datalle<span class="se">\ </span><span class="m">0125</span>.txt<span class="w"> </span>-v<span class="w"> </span>CANTIDAD
+</pre></div>
+</div>
+</section>
+<section id="pie-chart">
+<h3>Pie Chart<a class="headerlink" href="#pie-chart" title="Link to this heading"></a></h3>
+<p>Shows distribution by category.</p>
+<p><strong>Command:</strong></p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python<span class="w"> </span>main.py<span class="w"> </span>chart-pie<span class="w"> </span>&lt;FILE_PATH&gt;<span class="w"> </span><span class="o">[</span>OPTIONS<span class="o">]</span>
+</pre></div>
+</div>
+<p><strong>Options:</strong></p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">-g,</span> <span class="pre">--group-by</span></code>: Column to group by (default: RUBRO)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-v,</span> <span class="pre">--value-column</span></code>: Column with values (default: PRECIO_TOTAL)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-o,</span> <span class="pre">--output</span></code>: Save chart to HTML file</p></li>
+</ul>
+<p><strong>Example:</strong></p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Show distribution by rubro</span>
+python<span class="w"> </span>main.py<span class="w"> </span>chart-pie<span class="w"> </span>datos/Datalle<span class="se">\ </span><span class="m">0125</span>.txt
+
+<span class="c1"># Save with custom grouping</span>
+python<span class="w"> </span>main.py<span class="w"> </span>chart-pie<span class="w"> </span>datos/Datalle<span class="se">\ </span><span class="m">0125</span>.txt<span class="w"> </span>-g<span class="w"> </span>MANDT<span class="w"> </span>-o<span class="w"> </span>distribution.html
+</pre></div>
+</div>
+</section>
+<section id="comparison-chart">
+<h3>Comparison Chart<a class="headerlink" href="#comparison-chart" title="Link to this heading"></a></h3>
+<p>Compares values between two periods side by side.</p>
+<p><strong>Command:</strong></p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python<span class="w"> </span>main.py<span class="w"> </span>chart-compare<span class="w"> </span>&lt;FILE_PATH&gt;<span class="w"> </span>&lt;PERIOD1&gt;<span class="w"> </span>&lt;PERIOD2&gt;<span class="w"> </span><span class="o">[</span>OPTIONS<span class="o">]</span>
+</pre></div>
+</div>
+<p><strong>Options:</strong></p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">-p,</span> <span class="pre">--period-column</span></code>: Period column (default: MONTH)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-g,</span> <span class="pre">--group-by</span></code>: Category column (default: RUBRO)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-v,</span> <span class="pre">--value-column</span></code>: Values to compare (default: PRECIO_TOTAL)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-o,</span> <span class="pre">--output</span></code>: Save chart to HTML file</p></li>
+</ul>
+<p><strong>Example:</strong></p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Compare months 001 vs 002</span>
+python<span class="w"> </span>main.py<span class="w"> </span>chart-compare<span class="w"> </span>datos/Datalle<span class="se">\ </span><span class="m">0125</span>.txt<span class="w"> </span><span class="m">001</span><span class="w"> </span><span class="m">002</span>
+
+<span class="c1"># Save comparison to file</span>
+python<span class="w"> </span>main.py<span class="w"> </span>chart-compare<span class="w"> </span>datos/Datalle<span class="se">\ </span><span class="m">0125</span>.txt<span class="w"> </span><span class="m">001</span><span class="w"> </span><span class="m">002</span><span class="w"> </span>-o<span class="w"> </span>comparison.html
+
+<span class="c1"># Compare by quantity</span>
+python<span class="w"> </span>main.py<span class="w"> </span>chart-compare<span class="w"> </span>datos/Datalle<span class="se">\ </span><span class="m">0125</span>.txt<span class="w"> </span><span class="m">001</span><span class="w"> </span><span class="m">002</span><span class="w"> </span>-v<span class="w"> </span>CANTIDAD
+</pre></div>
+</div>
+</section>
+<section id="summary-dashboard">
+<h3>Summary Dashboard<a class="headerlink" href="#summary-dashboard" title="Link to this heading"></a></h3>
+<p>Comprehensive dashboard with multiple visualizations.</p>
+<p><strong>Command:</strong></p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python<span class="w"> </span>main.py<span class="w"> </span>dashboard<span class="w"> </span>&lt;FILE_PATH&gt;<span class="w"> </span><span class="o">[</span>OPTIONS<span class="o">]</span>
+</pre></div>
+</div>
+<p><strong>Options:</strong></p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">-v,</span> <span class="pre">--value-column</span></code>: Column with values (default: PRECIO_TOTAL)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-o,</span> <span class="pre">--output</span></code>: Save dashboard to HTML file</p></li>
+</ul>
+<p><strong>Includes:</strong></p>
+<ul class="simple">
+<li><p>Top 5 items bar chart</p></li>
+<li><p>Total vs Average comparison</p></li>
+<li><p>Distribution pie chart</p></li>
+<li><p>Key statistics indicator</p></li>
+</ul>
+<p><strong>Example:</strong></p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Open dashboard in browser</span>
+python<span class="w"> </span>main.py<span class="w"> </span>dashboard<span class="w"> </span>datos/Datalle<span class="se">\ </span><span class="m">0125</span>.txt
+
+<span class="c1"># Save dashboard to file</span>
+python<span class="w"> </span>main.py<span class="w"> </span>dashboard<span class="w"> </span>datos/Datalle<span class="se">\ </span><span class="m">0125</span>.txt<span class="w"> </span>-o<span class="w"> </span>dashboard.html
+</pre></div>
+</div>
+</section>
+</section>
+<section id="python-api">
+<h2>Python API<a class="headerlink" href="#python-api" title="Link to this heading"></a></h2>
+<p>You can also create visualizations programmatically:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">src.visualizer</span><span class="w"> </span><span class="kn">import</span> <span class="n">DataVisualizer</span>
+
+<span class="c1"># Create visualizer</span>
+<span class="n">visualizer</span> <span class="o">=</span> <span class="n">DataVisualizer</span><span class="o">.</span><span class="n">from_file</span><span class="p">(</span><span class="s2">&quot;datos/Datalle 0125.txt&quot;</span><span class="p">)</span>
+
+<span class="c1"># Generate bar chart</span>
+<span class="n">fig</span> <span class="o">=</span> <span class="n">visualizer</span><span class="o">.</span><span class="n">bar_chart_by_category</span><span class="p">(</span>
+    <span class="n">category_column</span><span class="o">=</span><span class="s2">&quot;RUBRO&quot;</span><span class="p">,</span>
+    <span class="n">value_column</span><span class="o">=</span><span class="s2">&quot;PRECIO_TOTAL&quot;</span><span class="p">,</span>
+    <span class="n">n_top</span><span class="o">=</span><span class="mi">10</span>
+<span class="p">)</span>
+
+<span class="c1"># Save to file</span>
+<span class="n">visualizer</span><span class="o">.</span><span class="n">save_chart</span><span class="p">(</span><span class="n">fig</span><span class="p">,</span> <span class="s2">&quot;chart.html&quot;</span><span class="p">)</span>
+
+<span class="c1"># Display in browser</span>
+<span class="n">visualizer</span><span class="o">.</span><span class="n">show_chart</span><span class="p">(</span><span class="n">fig</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="advanced-examples">
+<h2>Advanced Examples<a class="headerlink" href="#advanced-examples" title="Link to this heading"></a></h2>
+<section id="create-and-save-multiple-charts">
+<h3>Create and Save Multiple Charts<a class="headerlink" href="#create-and-save-multiple-charts" title="Link to this heading"></a></h3>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Top items</span>
+python<span class="w"> </span>main.py<span class="w"> </span>chart-bar<span class="w"> </span>datos/Datalle<span class="se">\ </span><span class="m">0125</span>.txt<span class="w"> </span>-n<span class="w"> </span><span class="m">15</span><span class="w"> </span>-o<span class="w"> </span>top_15.html
+
+<span class="c1"># Trends</span>
+python<span class="w"> </span>main.py<span class="w"> </span>chart-trend<span class="w"> </span>datos/Datalle<span class="se">\ </span><span class="m">0125</span>.txt<span class="w"> </span>-o<span class="w"> </span>trends.html
+
+<span class="c1"># Distribution</span>
+python<span class="w"> </span>main.py<span class="w"> </span>chart-pie<span class="w"> </span>datos/Datalle<span class="se">\ </span><span class="m">0125</span>.txt<span class="w"> </span>-o<span class="w"> </span>distribution.html
+
+<span class="c1"># Comparison</span>
+python<span class="w"> </span>main.py<span class="w"> </span>chart-compare<span class="w"> </span>datos/Datalle<span class="se">\ </span><span class="m">0125</span>.txt<span class="w"> </span><span class="m">001</span><span class="w"> </span><span class="m">002</span><span class="w"> </span>-o<span class="w"> </span>comparison.html
+
+<span class="c1"># Dashboard</span>
+python<span class="w"> </span>main.py<span class="w"> </span>dashboard<span class="w"> </span>datos/Datalle<span class="se">\ </span><span class="m">0125</span>.txt<span class="w"> </span>-o<span class="w"> </span>summary.html
+</pre></div>
+</div>
+</section>
+<section id="compare-different-categories">
+<h3>Compare Different Categories<a class="headerlink" href="#compare-different-categories" title="Link to this heading"></a></h3>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Compare by quantity instead of price</span>
+python<span class="w"> </span>main.py<span class="w"> </span>chart-compare<span class="w"> </span>datos/Datalle<span class="se">\ </span><span class="m">0125</span>.txt<span class="w"> </span><span class="m">001</span><span class="w"> </span><span class="m">002</span><span class="w"> </span>-v<span class="w"> </span>CANTIDAD
+
+<span class="c1"># Trend of costs</span>
+python<span class="w"> </span>main.py<span class="w"> </span>chart-trend<span class="w"> </span>datos/Datalle<span class="se">\ </span><span class="m">0125</span>.txt<span class="w"> </span>-v<span class="w"> </span>PRECIO_TOTAL
+
+<span class="c1"># Distribution by branch</span>
+python<span class="w"> </span>main.py<span class="w"> </span>chart-pie<span class="w"> </span>datos/Datalle<span class="se">\ </span><span class="m">0125</span>.txt<span class="w"> </span>-g<span class="w"> </span>MANDT
+</pre></div>
+</div>
+</section>
+<section id="analyze-different-periods">
+<h3>Analyze Different Periods<a class="headerlink" href="#analyze-different-periods" title="Link to this heading"></a></h3>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Compare quarters (if data available)</span>
+python<span class="w"> </span>main.py<span class="w"> </span>chart-compare<span class="w"> </span>datos/Datalle<span class="se">\ </span><span class="m">0125</span>.txt<span class="w"> </span>Q1<span class="w"> </span>Q2<span class="w"> </span>-p<span class="w"> </span>QUARTER
+
+<span class="c1"># Year-over-year comparison</span>
+python<span class="w"> </span>main.py<span class="w"> </span>chart-compare<span class="w"> </span>datos/Datalle<span class="se">\ </span><span class="m">0125</span>.txt<span class="w"> </span><span class="m">2025</span><span class="w"> </span><span class="m">2026</span><span class="w"> </span>-p<span class="w"> </span>YEAR
+</pre></div>
+</div>
+</section>
+</section>
+<section id="tips-tricks">
+<h2>Tips &amp; Tricks<a class="headerlink" href="#tips-tricks" title="Link to this heading"></a></h2>
+<section id="interactive-features">
+<h3>Interactive Features<a class="headerlink" href="#interactive-features" title="Link to this heading"></a></h3>
+<p>All Plotly charts include:</p>
+<ul class="simple">
+<li><p><strong>Hover</strong>: Mouse over to see exact values</p></li>
+<li><p><strong>Zoom</strong>: Click and drag to zoom in on specific areas</p></li>
+<li><p><strong>Pan</strong>: Hold shift and drag to move around</p></li>
+<li><p><strong>Legend</strong>: Click legend items to hide/show series</p></li>
+<li><p><strong>Download</strong>: Camera icon in top right saves as PNG</p></li>
+<li><p><strong>Export</strong>: Save data as CSV via chart menu</p></li>
+</ul>
+</section>
+<section id="browser-tips">
+<h3>Browser Tips<a class="headerlink" href="#browser-tips" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>Open charts in Chrome or Firefox for best results</p></li>
+<li><p>Charts work offline (no internet required after saved)</p></li>
+<li><p>Combine multiple charts for presentations</p></li>
+<li><p>Use browser print-to-PDF for archiving</p></li>
+</ul>
+</section>
+<section id="report-generation">
+<h3>Report Generation<a class="headerlink" href="#report-generation" title="Link to this heading"></a></h3>
+<p>Combine charts with data in reports:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Create all charts</span>
+python<span class="w"> </span>main.py<span class="w"> </span>chart-bar<span class="w"> </span>datos/Datalle<span class="se">\ </span><span class="m">0125</span>.txt<span class="w"> </span>-n<span class="w"> </span><span class="m">10</span><span class="w"> </span>-o<span class="w"> </span>top_10.html
+python<span class="w"> </span>main.py<span class="w"> </span>chart-trend<span class="w"> </span>datos/Datalle<span class="se">\ </span><span class="m">0125</span>.txt<span class="w"> </span>-o<span class="w"> </span>trend.html
+python<span class="w"> </span>main.py<span class="w"> </span>chart-pie<span class="w"> </span>datos/Datalle<span class="se">\ </span><span class="m">0125</span>.txt<span class="w"> </span>-o<span class="w"> </span>distribution.html
+python<span class="w"> </span>main.py<span class="w"> </span>report<span class="w"> </span>datos/Datalle<span class="se">\ </span><span class="m">0125</span>.txt<span class="w"> </span>-o<span class="w"> </span>summary_report.txt
+
+<span class="c1"># Open all files in browser</span>
+open<span class="w"> </span>top_10.html<span class="w"> </span>trend.html<span class="w"> </span>distribution.html<span class="w"> </span>summary_report.txt
+</pre></div>
+</div>
+</section>
+</section>
+<section id="performance-notes">
+<h2>Performance Notes<a class="headerlink" href="#performance-notes" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p>Large datasets (&gt;1M rows) may take time to load</p></li>
+<li><p>Use filtering/chunking for faster processing</p></li>
+<li><p>Consider grouping by higher levels (e.g., by month instead of day)</p></li>
+<li><p>Charts are stored locally and don’t require server resources</p></li>
+</ul>
+</section>
+<section id="troubleshooting">
+<h2>Troubleshooting<a class="headerlink" href="#troubleshooting" title="Link to this heading"></a></h2>
+<section id="chart-not-displaying">
+<h3>Chart Not Displaying<a class="headerlink" href="#chart-not-displaying" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>Ensure you have the latest Plotly version: <code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">--upgrade</span> <span class="pre">plotly</span></code></p></li>
+<li><p>Check browser console for errors (F12 in most browsers)</p></li>
+<li><p>Try a different browser</p></li>
+<li><p>Verify file path and data format are correct</p></li>
+</ul>
+</section>
+<section id="chart-looks-wrong">
+<h3>Chart Looks Wrong<a class="headerlink" href="#chart-looks-wrong" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>Check column names are correct with <code class="docutils literal notranslate"><span class="pre">python</span> <span class="pre">main.py</span> <span class="pre">info</span></code></p></li>
+<li><p>Ensure value column contains numeric data</p></li>
+<li><p>Try specifying explicit value and category columns</p></li>
+</ul>
+</section>
+<section id="memory-issues">
+<h3>Memory Issues<a class="headerlink" href="#memory-issues" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>Use chart commands on subsets of data</p></li>
+<li><p>Process large files with chunking</p></li>
+<li><p>Save charts instead of displaying (uses less memory)</p></li>
+</ul>
+</section>
+<section id="missing-data-in-chart">
+<h3>Missing Data in Chart<a class="headerlink" href="#missing-data-in-chart" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>Filter data before visualizing</p></li>
+<li><p>Check for null values: <code class="docutils literal notranslate"><span class="pre">python</span> <span class="pre">main.py</span> <span class="pre">stats</span></code></p></li>
+<li><p>Ensure date/period format is consistent</p></li>
+</ul>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="cli_guide.html" class="btn btn-neutral float-left" title="CLI Guide" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="api/index.html" class="btn btn-neutral float-right" title="API Reference" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2026, Santiago Andrade.</p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
