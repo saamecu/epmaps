@@ -14,6 +14,7 @@ from src.yearly_analyzer import YearlyAnalyzer
 from src.forecaster import Forecaster
 from src.anomaly_detector import AnomalyDetector
 from src.forecast_visualizer import ForecastVisualizer
+from src.report_exporter import ReportExporter
 
 
 console = Console()
@@ -897,6 +898,70 @@ def visualize_anomalies(directory: str, periods: int, output: str) -> None:
         fig_risk = viz.plot_risk_dashboard()
         viz.save_chart(fig_risk, risk_file)
         console.print(f"[green]✓ Risk dashboard saved:[/green] {risk_file}\n")
+
+    except Exception as e:
+        console.print(f"[bold red]Error:[/bold red] {e}")
+        raise click.Abort()
+
+
+@cli.command()
+@click.argument("directory", type=click.Path(exists=True))
+@click.option(
+    "--format",
+    "export_format",
+    type=click.Choice(["excel", "pdf", "both"]),
+    default="both",
+    help="Export format (default: both).",
+)
+@click.option(
+    "--no-forecast",
+    is_flag=True,
+    default=False,
+    help="Skip forecast section (faster, no sklearn dependency needed).",
+)
+@click.option(
+    "--no-anomalies",
+    is_flag=True,
+    default=False,
+    help="Skip anomaly detection section.",
+)
+@click.option(
+    "-o",
+    "--output",
+    type=click.Path(),
+    default="reports/epmaps_report",
+    help="Output path without extension (default: reports/epmaps_report).",
+)
+def export_report(
+    directory: str,
+    export_format: str,
+    no_forecast: bool,
+    no_anomalies: bool,
+    output: str,
+) -> None:
+    """Export a complete Excel and/or PDF report.
+
+    Combines yearly metrics, monthly detail, top categories, forecast,
+    and anomaly detection into a single shareable document.
+    """
+    try:
+        console.print(f"\n[bold cyan]Building report from:[/bold cyan] {directory}\n")
+
+        exporter = ReportExporter.from_directory(
+            directory,
+            include_forecast=not no_forecast,
+            include_anomalies=not no_anomalies,
+        )
+
+        if export_format in ("excel", "both"):
+            excel_path = exporter.export_excel(f"{output}.xlsx")
+            console.print(f"[green]✓ Excel report saved:[/green] {excel_path}")
+
+        if export_format in ("pdf", "both"):
+            pdf_path = exporter.export_pdf(f"{output}.pdf")
+            console.print(f"[green]✓ PDF report saved:[/green] {pdf_path}")
+
+        console.print()
 
     except Exception as e:
         console.print(f"[bold red]Error:[/bold red] {e}")
